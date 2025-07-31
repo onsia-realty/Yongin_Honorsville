@@ -1,0 +1,193 @@
+"use client"
+
+import React, { useState } from "react"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
+
+export default function RegistrationPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    address: ''
+  })
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.name.trim()) {
+      alert("고객명을 입력해 주세요.")
+      return
+    }
+
+    if (!formData.phone.trim()) {
+      alert("핸드폰 번호를 입력해 주세요.")
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      // 문자 발송 시뮬레이션
+      const message = `[클러스터용인 경남아너스빌] 새로운 관심고객 등록
+      
+고객명: ${formData.name}
+연락처: ${formData.phone}
+주소: ${formData.address || '미입력'}
+
+등록시간: ${new Date().toLocaleString('ko-KR')}`
+
+      // 관리자에게 문자 발송 (실제로는 SMS API 사용)
+      console.log('SMS 발송:', message)
+      
+      alert("관심고객 등록이 완료되었습니다.\n\n담당자가 빠른 시일 내에 연락드리겠습니다.\n\n감사합니다.")
+      
+      // 폼 초기화
+      setFormData({
+        name: '',
+        phone: '',
+        address: ''
+      })
+
+    } catch (error) {
+      console.error('등록 실패:', error)
+      alert("등록 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Header />
+      
+      {/* 헤로 섹션 */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 mt-16">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">관심고객 등록</h1>
+          <p className="text-lg opacity-90">클러스터용인 경남아너스빌에 관심을 가져주셔서 감사합니다</p>
+        </div>
+      </div>
+
+      {/* 메인 콘텐츠 */}
+      <main className="container mx-auto px-4 py-12">
+        <div className="max-w-2xl mx-auto">
+          
+          {/* 개인정보 동의 안내 */}
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded-r-lg">
+            <h3 className="text-lg font-bold text-blue-800 mb-3">✓ 개인정보 처리 안내</h3>
+            <div className="text-sm text-blue-700 space-y-2">
+              <p>• <strong>수집목적:</strong> 분양 상담 및 정보 제공</p>
+              <p>• <strong>수집항목:</strong> 이름, 연락처, 주소</p>
+              <p>• <strong>보유기간:</strong> 분양 완료 후 1년</p>
+              <p className="text-blue-600 font-medium mt-3">
+                등록 버튼 클릭 시 개인정보 수집·이용에 동의한 것으로 간주됩니다.
+              </p>
+            </div>
+          </div>
+
+          {/* 등록 폼 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              
+              {/* 고객명 */}
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  고객명 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="성함을 입력해주세요"
+                  required
+                />
+              </div>
+
+              {/* 핸드폰 번호 */}
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  핸드폰 번호 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="010-1234-5678"
+                  required
+                />
+              </div>
+
+              {/* 주소 (선택사항) */}
+              <div>
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                  주소 <span className="text-gray-400">(선택사항)</span>
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="현재 거주지를 입력해주세요"
+                />
+              </div>
+
+              {/* 버튼 */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-4 px-6 rounded-lg transition duration-200 text-lg"
+                >
+                  {isSubmitting ? '등록 중...' : '등록하기'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.history.back()}
+                  className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-lg transition duration-200 text-lg"
+                >
+                  취소
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+          {/* 문의 안내 */}
+          <div className="mt-8 text-center">
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h4 className="text-lg font-bold text-gray-800 mb-3">전화 문의</h4>
+              <a 
+                href="tel:1668-5257" 
+                className="inline-flex items-center text-2xl font-bold text-blue-600 hover:text-blue-700"
+              >
+                📞 1668-5257
+              </a>
+              <p className="text-sm text-gray-600 mt-2">평일 09:00 ~ 18:00</p>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  )
+}

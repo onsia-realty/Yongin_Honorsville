@@ -20,18 +20,18 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://cluster-honorsville.com'),
+  metadataBase: new URL('https://yongin-honorsville.vercel.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
     description: '동용인IC(예정)를 통해 삼성전자와 SK하이닉스 10분대 이동 가능. 서울~세종고속도로 더 가깝게, 삼성,SK하이닉스 10분대로 더 빠르게. 경기도 용인시 처인구 양지면 양지리 697번지 일원',
-    url: 'https://cluster-honorsville.com',
+    url: 'https://yongin-honorsville.vercel.app',
     siteName: '클러스터용인 경남아너스빌',
     images: [
       {
-        url: 'https://cluster-honorsville.com/대표홈페이지 썸네일.jpg',
+        url: 'https://yongin-honorsville.vercel.app/대표홈페이지 썸네일.jpg',
         width: 1200,
         height: 630,
         alt: '클러스터용인 경남아너스빌 - 반도체 프리미엄 직접 영향권',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
     description: '동용인IC를 통해 삼성전자와 SK하이닉스 10분대 이동. 용인시 처인구 양지면 양지리 697번지',
-    images: ['https://cluster-honorsville.com/대표홈페이지 썸네일.jpg'],
+    images: ['https://yongin-honorsville.vercel.app/대표홈페이지 썸네일.jpg'],
     creator: '@clusteryongin',
     site: '@clusteryongin',
   },

@@ -20,7 +20,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://yongin-honorsville.vercel.app'),
   alternates: {
     canonical: '/',
   },

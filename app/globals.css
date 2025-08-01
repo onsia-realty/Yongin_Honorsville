@@ -43,6 +43,7 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --vh: 1vh;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -78,6 +79,34 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+  
+  /* 터치 디바이스 최적화 */
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    button, a {
+      touch-action: manipulation;
+    }
+  }
+  
+  /* 모바일 스크롤 최적화 */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 모바일에서 헤더 높이 보정 */
+  main {
+    padding-top: 64px; /* 모바일 헤더 높이 */
+  }
+  
+  @media (min-width: 768px) {
+    main {
+      padding-top: 80px; /* 데스크톱 헤더 높이 */
+    }
+  }
 }
 
 @layer base {
@@ -87,4 +116,238 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+  /* 모바일 햄버거 메뉴 애니메이션 */
+  .hamburger-line {
+    @apply absolute left-0 w-full h-0.5 bg-gray-800 transition-all duration-300;
+  }
+  
+  /* 모바일 메뉴 슬라이드 효과 */
+  .mobile-menu-enter {
+    @apply transform translate-x-full;
+  }
+  
+  .mobile-menu-enter-active {
+    @apply transform translate-x-0 transition-transform duration-300;
+  }
+  
+  /* 스크롤 reveal 애니메이션 */
+  .scroll-reveal {
+    @apply opacity-0 translate-y-10 transition-all duration-700;
+  }
+  
+  .scroll-reveal.revealed {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  /* 패럴랙스 배경 효과 */
+  .parallax-bg {
+    @apply transition-transform duration-100 ease-out;
+    will-change: transform;
+  }
+  
+  /* 모바일 CTA 버튼 스타일 */
+  .mobile-cta-button {
+    @apply block w-full px-8 py-4 rounded-full text-lg font-bold shadow-2xl transition-all active:scale-95;
+  }
+  
+  /* 플로팅 버튼 애니메이션 */
+  .floating-button {
+    @apply fixed z-40 transition-all duration-300 hover:scale-110;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+@layer utilities {
+  /* 모바일 전용 유틸리티 */
+  .mobile-only {
+    @apply block md:hidden;
+  }
+  
+  .desktop-only {
+    @apply hidden md:block;
+  }
+  
+  /* 안전 영역 패딩 (노치 대응) */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* 터치 타겟 최소 크기 보장 */
+  .touch-target {
+    @apply min-w-[44px] min-h-[44px];
+  }
+  
+  /* 모바일 헤더 높이 변수 */
+  .h-mobile-header {
+    height: 64px;
+  }
+  
+  .pt-mobile-header {
+    padding-top: 64px;
+  }
+  
+  /* 스와이프 제스처 영역 */
+  .swipe-area {
+    touch-action: pan-y;
+  }
+  
+  /* 모바일 폰트 크기 최적화 */
+  .text-mobile-hero {
+    @apply text-3xl md:text-6xl;
+  }
+  
+  .text-mobile-title {
+    @apply text-2xl md:text-4xl;
+  }
+  
+  .text-mobile-subtitle {
+    @apply text-lg md:text-2xl;
+  }
+  
+  .text-mobile-body {
+    @apply text-base md:text-lg;
+  }
+}
+
+/* 모바일 디바이스별 최적화 */
+@media (max-width: 374px) {
+  /* 작은 모바일 (iPhone SE 등) */
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 413px) {
+  /* 일반 모바일 */
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 414px) and (max-width: 767px) {
+  /* 큰 모바일 */
+  html {
+    font-size: 16px;
+  }
+}
+
+/* 가로 모드 대응 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .h-mobile-header {
+    height: 48px;
+  }
+  
+  .pt-mobile-header {
+    padding-top: 48px;
+  }
+}
+
+/* 다크모드 대응 (선택사항) */
+@media (prefers-color-scheme: dark) {
+  /* 다크모드 스타일 */
+}
+
+/* 접근성 - 모션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 클러스터 아너스빌 스타일 추가 */
+.popup-zone {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .popup-zone {
+    flex-direction: column;
+    bottom: 80px;
+    left: auto;
+    right: 20px;
+    transform: none;
+  }
+}
+
+/* 비디오 팝업 */
+.video-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+/* 관심고객등록 폼 (클러스터 스타일) */
+.register-form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(233, 30, 99, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .register-form {
+    display: none;
+  }
+}
+
+/* 스크롤 reveal 애니메이션 강화 */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* PC/Mobile 표시 유틸리티 */
+@media (max-width: 991px) {
+  .pc { display: none !important; }
+  .mobile { display: block !important; }
+}
+
+@media (min-width: 992px) {
+  .pc { display: block !important; }
+  .mobile { display: none !important; }
 }

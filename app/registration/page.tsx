@@ -7,8 +7,7 @@ import Footer from "@/components/Footer"
 export default function RegistrationPage() {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
-    address: ''
+    phone: ''
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -38,11 +37,34 @@ export default function RegistrationPage() {
 
     try {
       // 문자 발송 시뮬레이션
+      // Google Sheets에 데이터 저장
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzeqe6lDq75BkvIJ8r0jAfyO59H9hDrOc9cXRMy9zl3uPSlSjTDJ3JDXML3w67SaDme/exec'
+      
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // CORS 문제 해결
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          timestamp: new Date().toLocaleString('ko-KR'),
+          source: '관심고객 등록 페이지'
+        })
+      })
+      
+      // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
+      console.log('Registration data sent:', {
+        name: formData.name,
+        phone: formData.phone
+      })
+
+      // 카카오톡/문자 알림 (실제 구현시 백엔드 API 필요)
       const message = `[클러스터용인 경남아너스빌] 새로운 관심고객 등록
       
 고객명: ${formData.name}
 연락처: ${formData.phone}
-주소: ${formData.address || '미입력'}
 
 등록시간: ${new Date().toLocaleString('ko-KR')}`
 
@@ -54,8 +76,7 @@ export default function RegistrationPage() {
       // 폼 초기화
       setFormData({
         name: '',
-        phone: '',
-        address: ''
+        phone: ''
       })
 
     } catch (error) {
@@ -87,7 +108,7 @@ export default function RegistrationPage() {
             <h3 className="text-lg font-bold text-blue-800 mb-3">✓ 개인정보 처리 안내</h3>
             <div className="text-sm text-blue-700 space-y-2">
               <p>• <strong>수집목적:</strong> 분양 상담 및 정보 제공</p>
-              <p>• <strong>수집항목:</strong> 이름, 연락처, 주소</p>
+              <p>• <strong>수집항목:</strong> 이름, 연락처</p>
               <p>• <strong>보유기간:</strong> 분양 완료 후 1년</p>
               <p className="text-blue-600 font-medium mt-3">
                 등록 버튼 클릭 시 개인정보 수집·이용에 동의한 것으로 간주됩니다.
@@ -133,21 +154,6 @@ export default function RegistrationPage() {
                 />
               </div>
 
-              {/* 주소 (선택사항) */}
-              <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                  주소 <span className="text-gray-400">(선택사항)</span>
-                </label>
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="현재 거주지를 입력해주세요"
-                />
-              </div>
 
               {/* 버튼 */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6">

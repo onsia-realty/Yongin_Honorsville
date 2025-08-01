@@ -49,16 +49,18 @@ export default function PromotionalVideoPage() {
           <div className="row">
             <h6>홍보영상</h6>
             
-            {/* 메인 홍보 영상 */}
-            <div className="relative w-full my-8" style={{ paddingBottom: '56.25%', height: 0 }}>
-              <iframe 
-                className="absolute top-0 left-0 w-full h-full" 
-                id="promotional_video" 
-                src="https://www.youtube.com/embed/YWB5Yy6LOmg?enablejsapi=1&version=3&playerapiid=ytplayer?rel=0&vq=hd720" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen
-              />
+            {/* 메인 홍보 영상 - 가운데 정렬 */}
+            <div className="flex justify-center items-center mb-16">
+              <div className="relative w-full max-w-4xl" style={{ paddingBottom: '56.25%', height: 0 }}>
+                <iframe 
+                  className="absolute top-0 left-0 w-full h-full" 
+                  id="promotional_video" 
+                  src="https://www.youtube.com/embed/YWB5Yy6LOmg?enablejsapi=1&version=3&playerapiid=ytplayer?rel=0&vq=hd720" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                />
+              </div>
             </div>
             
             {/* 홍보영상 썸네일 시리즈 */}
@@ -67,10 +69,10 @@ export default function PromotionalVideoPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 {/* 1편 - 임장유랑단 */}
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <a href="https://youtu.be/7gQ347EIX3I" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   <div className="relative aspect-video">
                     <Image
-                      src="/임장유랑단.png"
+                      src="/동영상 썸네일2.png"
                       alt="임장유랑단 1편"
                       width={400}
                       height={225}
@@ -88,13 +90,13 @@ export default function PromotionalVideoPage() {
                     <h5 className="font-bold text-lg mb-2">임장유랑단</h5>
                     <p className="text-gray-600 text-sm">클러스터용인 경남아너스빌의 현장을 생생하게 전해드리는 임장 영상 1편</p>
                   </div>
-                </div>
+                </a>
 
                 {/* 2편 - 임장유랑단2 */}
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <a href="https://youtu.be/vOFsxZvtfOM" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   <div className="relative aspect-video">
                     <Image
-                      src="/임장유랑단2.png"
+                      src="/동영상 썸네일3.png"
                       alt="임장유랑단 2편"
                       width={400}
                       height={225}
@@ -112,13 +114,13 @@ export default function PromotionalVideoPage() {
                     <h5 className="font-bold text-lg mb-2">임장유랑단 2</h5>
                     <p className="text-gray-600 text-sm">더욱 자세하고 깊이 있는 현장 분석과 투자 가치를 소개하는 2편</p>
                   </div>
-                </div>
+                </a>
 
                 {/* 3편 - 용인반도체 홍보영상 */}
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <a href="https://youtu.be/YWB5Yy6LOmg" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   <div className="relative aspect-video">
                     <Image
-                      src="/용인반도체홍보영상.png"
+                      src="/동영상 썸네일1.png"
                       alt="용인반도체 홍보영상"
                       width={400}
                       height={225}
@@ -136,7 +138,7 @@ export default function PromotionalVideoPage() {
                     <h5 className="font-bold text-lg mb-2">용인반도체 홍보영상</h5>
                     <p className="text-gray-600 text-sm">용인 반도체 클러스터의 미래 가치와 발전 계획을 담은 공식 홍보영상</p>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
 

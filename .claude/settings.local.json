@@ -8,7 +8,8 @@
       "Bash(pnpm install:*)",
       "Bash(npx next:*)",
       "Bash(mv:*)",
-      "WebFetch(domain:cluster-honorsville.co.kr)"
+      "WebFetch(domain:cluster-honorsville.co.kr)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

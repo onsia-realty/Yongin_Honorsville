@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import Header from "@/components/Header"
+// import ClusterSection from "@/components/ClusterSection" // 임시 비활성화
 
 export default function HomePage() {
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false)
@@ -70,33 +71,31 @@ export default function HomePage() {
       return
     }
 
-    if (!/^\d{11}$/.test(formData.phone)) {
-      alert("휴대폰 번호는 11자리 숫자로 입력해주세요.")
+    if (!/^\d{10,11}$/.test(formData.phone)) {
+      alert("휴대폰 번호는 10-11자리 숫자로 입력해주세요.")
       return
     }
 
-    // 개인정보 동의는 버튼 클릭으로 자동 동의 처리
-
     try {
-      // 문자 내용 생성
-      const message = `[클러스터용인 경남아너스빌] 간편 관심고객 등록
-
-■ 고객정보
-- 성명: ${formData.name}
-- 연락처: ${formData.phone}
-- 문의내용: ${formData.inquiry || "관심고객 등록"}
-
-등록시간: ${new Date().toLocaleString('ko-KR')}`
-
-      // 관리자 휴대폰 번호로 문자 발송
-      const adminPhoneNumber = '010-9331-0967'
-      const encodedMessage = encodeURIComponent(message)
-      const smsUrl = `sms:${adminPhoneNumber}?body=${encodedMessage}`
+      // Google Apps Script URL
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz7twzCnPcTloLXdZ2umJVWyRd5uh88eIHn7W5P39dO5b4NLeD6Vm4COv5JpMTulDO/exec'
       
-      // 문자앱으로 연결
-      window.open(smsUrl, '_blank')
+      // Google Sheets로 데이터 전송
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          inquiry: formData.inquiry || '관심고객 등록',
+          source: '클러스터용인 경남아너스빌 웹사이트'
+        })
+      })
 
-      alert("관심고객 등록이 완료되었습니다.\n담당자에게 문자가 발송되었으며,\n빠른 시일 내에 연락드리겠습니다.")
+      // no-cors 모드에서는 응답을 읽을 수 없으므로 바로 성공 처리
+      alert("관심고객 등록이 완료되었습니다.\n빠른 시일 내에 연락드리겠습니다.")
       
       // 폼 초기화
       setFormData({ name: "", phone: "", inquiry: "" })
@@ -152,9 +151,9 @@ export default function HomePage() {
       {/* Header */}
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative h-screen md:h-screen pt-[140px] flex items-center justify-center overflow-hidden parallax-bg">
-        {/* Background Images - 여기서 이미지를 교체하세요 */}
+      {/* Hero Section (클러스터 스타일) */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image - 이미지 선명하게 표시 */}
         <div className="absolute inset-0">
           <Image
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ChatGPT%20Image%202025%EB%85%84%207%EC%9B%94%2022%EC%9D%BC%20%EC%98%A4%ED%9B%84%2002_21_39-83CypR9ONd0PFm9hyOCPvPWmvS5UvN.png"
@@ -163,66 +162,47 @@ export default function HomePage() {
             className="object-cover"
           />
         </div>
-
-        {/* Overlay */}
+        
+        {/* 텍스트 가독성을 위한 약간의 어두운 오버레이 */}
         <div className="absolute inset-0 bg-black/20" />
 
         {/* Hero Content */}
         <div className="relative z-10 text-center text-white px-4">
-          {/* PC 버전 */}
-          <div className="hidden md:block">
-            <h1 className="text-6xl font-bold mb-4 drop-shadow-lg">
-              클러스터용인 경남아너스빌
+          {/* 모바일 버전 */}
+          <div className="mobile">
+            <h1 className="text-4xl font-bold mb-4 leading-tight">
+              서울~세종고속도로<br/>
+              더 가깝게
             </h1>
-            <p className="text-2xl mb-8 drop-shadow-lg opacity-90">
-              반도체 프리미엄 직접 영향권
-            </p>
+            <p className="text-xl mb-2">삼성,SK하이닉스</p>
+            <p className="text-2xl font-bold mb-8">10분대로 더 빠르게</p>
             
-            {/* PC용 전화번호 강조 */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-full px-8 py-4 inline-block mb-8 shadow-xl">
-              <a 
-                href="tel:1668-5257" 
-                className="flex items-center gap-3 text-gray-800 hover:text-blue-600 transition-colors"
-              >
-                <Phone className="w-6 h-6 text-green-600" />
-                <span className="text-3xl font-bold">1668-5257</span>
-              </a>
-              <p className="text-sm text-gray-600 mt-1">분양문의 (터치하여 전화걸기)</p>
+            <div className="bg-white rounded-full px-8 py-6 inline-block shadow-2xl">
+              <p className="text-3xl font-black text-blue-600 mb-2">반도체 프리미엄</p>
+              <p className="text-2xl font-bold text-gray-800">직접 영향권</p>
             </div>
           </div>
-
-          {/* 모바일 버전 - 카피사이트 스타일 적용 */}
-          <div className="block md:hidden">
-            <h1 className="text-3xl font-bold mb-2 drop-shadow-lg leading-tight">
-              클러스터용인<br />경남아너스빌
+          
+          {/* PC 버전 */}
+          <div className="pc">
+            <h1 className="text-6xl font-bold mb-4">
+              서울~세종고속도로 더 가깝게
             </h1>
-            <p className="text-lg mb-6 drop-shadow-lg opacity-90">
-              반도체 프리미엄 직접 영향권
-            </p>
+            <p className="text-3xl mb-8">삼성,SK하이닉스 10분대로 더 빠르게</p>
             
-            {/* 모바일용 심플한 CTA 버튼들 */}
-            <div className="space-y-3">
-              <a 
-                href="tel:1668-5257"
-                className="block bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-2xl transition-all active:scale-95"
-              >
-                📞 1668-5257 전화상담
-              </a>
-              <button 
-                onClick={() => setIsVideoPopupOpen(true)}
-                className="block w-full bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-2xl transition-all active:scale-95"
-              >
-                ▶ 홍보영상 보기
-              </button>
+            <div className="bg-white rounded-full px-12 py-8 inline-block shadow-2xl">
+              <p className="text-4xl font-black text-blue-600">반도체 프리미엄 직접 영향권</p>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-          <div className="text-sm">SCROLL DOWN</div>
+        {/* 스크롤 다운 애니메이션 */}
+        <div className="absolute bottom-8 left-1/2 text-white text-sm floating">
+          <div>SCROLL DOWN</div>
+          <div className="mt-2">▼</div>
         </div>
       </section>
+
 
       {/* Main Content Section */}
       <section
@@ -262,86 +242,54 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Premium Section */}
+      {/* Premium Section (클러스터 스타일) */}
       <section
         id="premium"
-        className="py-16 md:py-20 bg-gradient-to-b from-blue-900 to-blue-800 text-white scroll-reveal"
+        className="py-20 bg-gray-50 scroll-reveal relative"
       >
-        <div className="max-w-6xl mx-auto px-4">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/luxury-apartment-contact-bg.jpg"
+            alt="Luxury Apartment Background"
+            fill
+            className="object-cover opacity-20"
+          />
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">CLUSTER YONGIN HONORSVILLE</h2>
-            <p className="text-xl opacity-90">프리미엄 브랜드</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 drop-shadow-lg">CLUSTER YONGIN</h2>
+            <p className="text-xl text-gray-600 drop-shadow-lg">HONORSVILLE</p>
           </div>
 
-          <div className="text-center mb-16">
-            <h3 className="text-2xl md:text-3xl font-bold mb-8">
-              반도체 프리미엄은 고속도로를 타고 클러스터용인 경남아너스빌로 옵니다!
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-4 gap-8">
             {/* Feature 1 */}
-            <div className="bg-white/10 rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all">
-              <div className="mb-6">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-5hBG9jAKwKOfvoiuoSISjYQM764xh5.png"
-                  alt="반도체 클러스터"
-                  width={400}
-                  height={200}
-                  className="object-cover rounded-lg w-full"
-                />
-              </div>
-              <h4 className="text-xl font-bold mb-2">01. SK&SAMSUNG</h4>
-              <p className="mb-2">반도체 클러스터를 빠르게</p>
-              <p className="text-sm opacity-80">동용인IC를 통해 10분대 이동</p>
+            <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="text-4xl font-bold text-blue-600 mb-2">01</div>
+              <h3 className="text-lg font-bold mb-2">SK&SAMSUNG</h3>
+              <p className="text-sm text-gray-600">반도체 클러스터를 빠르게</p>
             </div>
-
+            
             {/* Feature 2 */}
-            <div className="bg-white/10 rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all">
-              <div className="mb-6">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-9xE9sdZxVhFuodqj35OZ1ONCqdlUtB.png"
-                  alt="교통 인프라"
-                  width={400}
-                  height={200}
-                  className="object-cover rounded-lg w-full"
-                />
-              </div>
-              <h4 className="text-xl font-bold mb-2">02. SPEED TRAFFIC</h4>
-              <p className="mb-2">서울 및 세종 빠른 접근</p>
-              <p className="text-sm opacity-80">고속도로 직접 연결</p>
+            <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="text-4xl font-bold text-blue-600 mb-2">02</div>
+              <h3 className="text-lg font-bold mb-2">SPEED TRAFFIC</h3>
+              <p className="text-sm text-gray-600">서울 및 세종 빠른 접근</p>
             </div>
-
+            
             {/* Feature 3 */}
-            <div className="bg-white/10 rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all">
-              <div className="mb-6">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-U7zNIBhWaqRkpLaxghOHNVaeNtYUSK.png"
-                  alt="교육 인프라"
-                  width={400}
-                  height={200}
-                  className="object-cover rounded-lg w-full"
-                />
-              </div>
-              <h4 className="text-xl font-bold mb-2">03. EDUCATION</h4>
-              <p className="mb-2">우수한 교육환경</p>
-              <p className="text-sm opacity-80">명문 학군 형성</p>
+            <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="text-4xl font-bold text-blue-600 mb-2">03</div>
+              <h3 className="text-lg font-bold mb-2">EDUCATION</h3>
+              <p className="text-sm text-gray-600">우수한 교육환경</p>
             </div>
-
+            
             {/* Feature 4 */}
-            <div className="bg-white/10 rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all">
-              <div className="mb-6">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-9sYY6Xb7zgMJMkkSuxz9nowb0i3NFL.png"
-                  alt="프리미엄 라이프"
-                  width={400}
-                  height={200}
-                  className="object-cover rounded-lg w-full"
-                />
-              </div>
-              <h4 className="text-xl font-bold mb-2">04. PREMIUM LIFE</h4>
-              <p className="mb-2">프리미엄 주거</p>
-              <p className="text-sm opacity-80">최고급 라이프스타일</p>
+            <div className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="text-4xl font-bold text-blue-600 mb-2">04</div>
+              <h3 className="text-lg font-bold mb-2">PREMIUM LIFE</h3>
+              <p className="text-sm text-gray-600">프리미엄 주거문화</p>
             </div>
           </div>
         </div>
@@ -392,20 +340,81 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Light Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/20" />
+        {/* Darker Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/50" />
 
         {/* Content */}
         <div className="relative z-10 max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <div className="bg-white text-gray-800 rounded-full px-8 py-4 inline-block mb-8">
+            <div className="bg-white text-gray-800 rounded-full px-8 py-4 inline-block mb-8 shadow-xl">
               <h2 className="text-2xl font-bold">CONTACT US</h2>
+            </div>
+          </div>
+
+          {/* 관심고객 등록 섹션 */}
+          <div className="max-w-4xl mx-auto px-4 text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white drop-shadow-lg">관심고객 등록</h2>
+            <p className="text-xl md:text-2xl mb-8 text-white font-medium drop-shadow-lg">전문 상담원이 친절하게 안내해드립니다.</p>
+            
+            <form onSubmit={handleFormSubmit} className="flex flex-col md:flex-row items-center gap-3 md:gap-x-6 justify-center bg-white/20 backdrop-blur-sm rounded-full p-4 md:p-6 shadow-2xl">
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <div className="flex items-center gap-2">
+                  <Phone className="text-white h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
+                  <Input
+                    type="text"
+                    placeholder="고객명"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="bg-white/90 border border-white/50 text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-white w-32 md:w-36 text-base px-4 py-2 rounded font-medium"
+                    required
+                  />
+                </div>
+                <Input
+                  type="tel"
+                  placeholder="휴대폰번호"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/[^\d]/g, "").slice(0, 11) })}
+                  className="bg-white/90 border border-white/50 text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-white w-36 md:w-44 text-base px-4 py-2 rounded font-medium"
+                  required
+                />
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="text-white text-sm md:text-base text-center font-medium">
+                  <p className="mb-1">개인정보 수집·이용 동의</p>
+                  <p className="text-xs opacity-90">(버튼 클릭 시 자동 동의됩니다)</p>
+                </div>
+                
+                <a 
+                  href="tel:1668-5257"
+                  className="flex-shrink-0 bg-green-500 hover:bg-green-600 text-white p-3 md:p-4 rounded-full transition-all shadow-xl hover:shadow-2xl"
+                  title="1668-5257로 전화걸기"
+                >
+                  <Phone className="w-6 h-6 md:w-8 md:h-8" />
+                </a>
+              </div>
+              
+              <Button
+                type="submit"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-8 md:px-10 py-3 rounded-full text-base md:text-lg font-bold transition-all w-full md:w-auto shadow-xl hover:shadow-2xl"
+              >
+                보내기
+              </Button>
+            </form>
+            
+            <div className="mt-6">
+              <Button asChild className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl hover:shadow-2xl">
+                <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-6 h-6" />
+                  카카오톡 문의하기
+                </a>
+              </Button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* 견본주택 */}
-            <div className="bg-white/10 rounded-xl p-6 md:p-8 text-center">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 md:p-8 text-center shadow-2xl">
               <div className="mb-4">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-UCVmMWyoWE3CIWOAGqxUTPbMGCiPqs.png"
@@ -415,9 +424,9 @@ export default function HomePage() {
                   className="rounded-lg mx-auto mb-4 w-full object-cover"
                 />
               </div>
-              <h3 className="text-lg md:text-xl font-bold mb-4 text-white">견본주택</h3>
-              <p className="mb-2 text-white text-sm md:text-base">경기도 용인시 처인구</p>
-              <p className="mb-6 text-white text-sm md:text-base">마평동 607-1</p>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 text-white drop-shadow-lg">견본주택</h3>
+              <p className="mb-2 text-white text-base md:text-lg font-medium">경기도 용인시 처인구</p>
+              <p className="mb-6 text-white text-base md:text-lg font-medium">마평동 607-1</p>
 
               <div className="flex flex-col gap-3 md:flex-row md:gap-4 justify-center">
                 <Button asChild className="bg-green-600 hover:bg-green-700 text-sm md:text-base py-3 md:py-2">
@@ -436,7 +445,7 @@ export default function HomePage() {
             </div>
 
             {/* 현장주소 */}
-            <div className="bg-white/10 rounded-xl p-6 md:p-8 text-center">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 md:p-8 text-center shadow-2xl">
               <div className="mb-4">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2-L8RvFiAPURazNB6ohkjECA1M9eBkxx.png"
@@ -446,9 +455,9 @@ export default function HomePage() {
                   className="rounded-lg mx-auto mb-4 w-full object-cover"
                 />
               </div>
-              <h3 className="text-lg md:text-xl font-bold mb-4 text-white">현장주소</h3>
-              <p className="mb-2 text-white text-sm md:text-base">경기도 용인시 처인구</p>
-              <p className="mb-6 text-white text-sm md:text-base">양지면 양지리 697번지 일원</p>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 text-white drop-shadow-lg">현장주소</h3>
+              <p className="mb-2 text-white text-base md:text-lg font-medium">경기도 용인시 처인구</p>
+              <p className="mb-6 text-white text-base md:text-lg font-medium">양지면 양지리 697번지 일원</p>
 
               <div className="flex flex-col gap-3 md:flex-row md:gap-4 justify-center">
                 <Button asChild className="bg-green-600 hover:bg-green-700 text-sm md:text-base py-3 md:py-2">
@@ -481,12 +490,12 @@ export default function HomePage() {
             >
               ▶ 홍보영상 보기
             </button>
-            <a 
+            <Link 
               href="/registration"
               className="block bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-2xl text-xl font-bold shadow-2xl transition-all active:scale-95 text-center"
             >
               📝 관심고객 등록
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -523,70 +532,110 @@ export default function HomePage() {
 
       {/* Floating Elements */}
       {/* 관심고객등록 버튼 */}
-      {/* 유튜브 버튼들 - 1페이지 고정 */}
-      <div className="fixed top-1/2 -translate-y-1/2 right-4 md:right-8 space-y-3 z-40">
-        {/* 홍보영상 */}
-        <button
-          onClick={() => setIsVideoPopupOpen(true)}
-          className="block w-20 h-16 md:w-24 md:h-20 bg-white rounded-lg shadow-lg hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
-          title="홍보영상"
-        >
-          <Image
-            src="/main_top_open01_n4.png"
-            alt="홍보영상"
-            width={96}
-            height={80}
-            className="w-full h-full object-cover"
-          />
-        </button>
-        
+      {/* 유튜브 버튼들 - 모바일은 상단 고정, PC는 우측 고정 */}
+      {/* 모바일 버전 - 상단 3개 고정 */}
+      <div className="fixed top-[64px] left-0 right-0 flex gap-0 z-40 md:hidden">
         {/* 영상1 */}
         <a
-          href="https://www.youtube.com/watch?v=q8QFbFpfzzE"
+          href="https://youtu.be/YWB5Yy6LOmg"
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-20 h-16 md:w-24 md:h-20 bg-white rounded-lg shadow-lg hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
-          title="용인 반도체 클러스터 영상1"
+          className="block w-1/3 aspect-video bg-white overflow-hidden"
+          title="홍보영상 1"
         >
           <Image
-            src="/position01_n3.jpg"
+            src="/동영상 썸네일1.png"
             alt="영상1"
-            width={96}
-            height={80}
+            width={120}
+            height={68}
             className="w-full h-full object-cover"
           />
         </a>
         
         {/* 영상2 */}
         <a
-          href="https://www.youtube.com/watch?v=JKjL4nK3IFc"
+          href="https://youtu.be/7gQ347EIX3I"
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-20 h-16 md:w-24 md:h-20 bg-white rounded-lg shadow-lg hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
-          title="용인 교통 인프라 영상2"
+          className="block w-1/3 aspect-video bg-white overflow-hidden"
+          title="홍보영상 2"
         >
           <Image
-            src="/position02_n1.jpg"
+            src="/동영상 썸네일2.png"
             alt="영상2"
-            width={96}
-            height={80}
+            width={120}
+            height={68}
             className="w-full h-full object-cover"
           />
         </a>
         
         {/* 영상3 */}
         <a
-          href="https://www.youtube.com/watch?v=5wA9lpCxsrk&t=2s"
+          href="https://youtu.be/vOFsxZvtfOM"
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-20 h-16 md:w-24 md:h-20 bg-white rounded-lg shadow-lg hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
-          title="아너스빌 프리미엄 영상3"
+          className="block w-1/3 aspect-video bg-white overflow-hidden"
+          title="홍보영상 3"
         >
           <Image
-            src="/premium_n5.jpg"
+            src="/동영상 썸네일3.png"
             alt="영상3"
-            width={96}
-            height={80}
+            width={120}
+            height={68}
+            className="w-full h-full object-cover"
+          />
+        </a>
+      </div>
+      
+      {/* PC 버전 - 우측 고정 (3개로 변경, 크기 증가) */}
+      <div className="hidden md:flex fixed top-1/2 -translate-y-1/2 right-8 flex-col space-y-4 z-40">
+        {/* 영상1 */}
+        <a
+          href="https://youtu.be/YWB5Yy6LOmg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-36 h-24 bg-white rounded-lg shadow-2xl hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
+          title="홍보영상 1"
+        >
+          <Image
+            src="/동영상 썸네일1.png"
+            alt="영상1"
+            width={144}
+            height={96}
+            className="w-full h-full object-cover"
+          />
+        </a>
+        
+        {/* 영상2 */}
+        <a
+          href="https://youtu.be/7gQ347EIX3I"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-36 h-24 bg-white rounded-lg shadow-2xl hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
+          title="홍보영상 2"
+        >
+          <Image
+            src="/동영상 썸네일2.png"
+            alt="영상2"
+            width={144}
+            height={96}
+            className="w-full h-full object-cover"
+          />
+        </a>
+        
+        {/* 영상3 */}
+        <a
+          href="https://youtu.be/vOFsxZvtfOM"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-36 h-24 bg-white rounded-lg shadow-2xl hover:scale-110 transition-transform overflow-hidden border-2 border-gray-200"
+          title="홍보영상 3"
+        >
+          <Image
+            src="/동영상 썸네일3.png"
+            alt="영상3"
+            width={144}
+            height={96}
             className="w-full h-full object-cover"
           />
         </a>

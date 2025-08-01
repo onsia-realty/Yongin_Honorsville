@@ -32,35 +32,15 @@ export default function BusinessPage() {
             <div className="mb-16">
               <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">프로젝트 개요</h2>
               
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-8 md:p-12 mb-12">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div className="space-y-6">
-                    <h3 className="text-2xl font-bold text-blue-900">클러스터용인 경남아너스빌</h3>
-                    <div className="space-y-4 text-gray-700">
-                      <p className="text-lg">
-                        <span className="font-semibold text-blue-800">위치:</span> 경기도 용인시 처인구 양지면 양지리 697번지 일원
-                      </p>
-                      <p className="text-lg">
-                        <span className="font-semibold text-blue-800">규모:</span> 지하 2층 ~ 지상 30층, 5개동
-                      </p>
-                      <p className="text-lg">
-                        <span className="font-semibold text-blue-800">세대수:</span> 총 XXX세대 (전용면적 XX㎡~XX㎡)
-                      </p>
-                      <p className="text-lg">
-                        <span className="font-semibold text-blue-800">준공예정:</span> 2027년 X월
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="relative h-80">
-                    <Image
-                      src="/modern-apartment-exterior.png"
-                      alt="클러스터용인 경남아너스빌 외관"
-                      fill
-                      className="object-cover rounded-xl"
-                    />
-                  </div>
-                </div>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                <Image
+                  src="/250704_클러스터용인 경남아너스빌_상품교육자료(3차)_분양가X-이미지-17.jpg"
+                  alt="클러스터용인 경남아너스빌 사업개요"
+                  width={1600}
+                  height={900}
+                  className="h-auto object-contain"
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                />
               </div>
             </div>
 
@@ -195,11 +175,13 @@ export default function BusinessPage() {
                 </a>
               </Button>
               
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-900">
-                <Link href="/directions">
-                  <MapPin className="w-5 h-5 mr-2" />
-                  오시는길 보기
-                </Link>
+              <Button asChild size="lg" className="bg-yellow-400 hover:bg-yellow-500 text-black">
+                <a href="https://open.kakao.com/o/gWqYXaEg" target="_blank" rel="noopener noreferrer">
+                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.633 1.91 4.925 4.761 6.178-.206.716-.664 2.31-.762 2.664-.123.446.164.442.345.321.142-.095 2.265-1.533 3.189-2.16.485.068.98.102 1.467.102 5.523 0 10-3.477 10-7.605S17.523 3 12 3z"/>
+                  </svg>
+                  카카오톡 문의
+                </a>
               </Button>
             </div>
           </div>

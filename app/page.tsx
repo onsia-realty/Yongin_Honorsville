@@ -404,7 +404,7 @@ export default function HomePage() {
             
             <div className="mt-6">
               <Button asChild className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl hover:shadow-2xl">
-                <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="w-6 h-6" />
                   카카오톡 문의하기
                 </a>
@@ -436,7 +436,7 @@ export default function HomePage() {
                   </a>
                 </Button>
                 <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-sm md:text-base py-3 md:py-2">
-                  <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                  <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     카카오톡 채팅
                   </a>
@@ -467,7 +467,7 @@ export default function HomePage() {
                   </a>
                 </Button>
                 <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-sm md:text-base py-3 md:py-2">
-                  <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                  <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     카카오톡 채팅
                   </a>

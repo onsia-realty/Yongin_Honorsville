@@ -60,7 +60,7 @@ export default function Footer() {
             {/* 카카오톡 문의 버튼 */}
             <div className="mt-6">
               <button 
-                onClick={() => window.open('https://open.kakao.com/o/your-openchat-link', '_blank')}
+                onClick={() => window.open('https://open.kakao.com/o/sen4dWJh', '_blank')}
                 className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-6 py-3 rounded-full font-medium transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">

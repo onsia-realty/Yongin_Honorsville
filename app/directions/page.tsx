@@ -77,7 +77,7 @@ export default function DirectionsPage() {
                       </a>
                     </Button>
                     <Button asChild className="bg-yellow-500 hover:bg-yellow-600">
-                      <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                      <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                         <MessageCircle className="w-4 h-4 mr-2" />
                         카카오톡 채팅
                       </a>
@@ -131,7 +131,7 @@ export default function DirectionsPage() {
                       </a>
                     </Button>
                     <Button asChild className="bg-yellow-500 hover:bg-yellow-600">
-                      <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                      <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                         <MessageCircle className="w-4 h-4 mr-2" />
                         카카오톡 채팅
                       </a>
@@ -249,7 +249,7 @@ export default function DirectionsPage() {
               </Button>
               
               <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-lg px-8 py-4">
-                <a href="https://open.kakao.com/o/g7AN2jIh" target="_blank" rel="noopener noreferrer">
+                <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="w-6 h-6 mr-2" />
                   카카오톡 문의
                 </a>

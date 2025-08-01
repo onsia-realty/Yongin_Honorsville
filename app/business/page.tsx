@@ -176,7 +176,7 @@ export default function BusinessPage() {
               </Button>
               
               <Button asChild size="lg" className="bg-yellow-400 hover:bg-yellow-500 text-black">
-                <a href="https://open.kakao.com/o/gWqYXaEg" target="_blank" rel="noopener noreferrer">
+                <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.633 1.91 4.925 4.761 6.178-.206.716-.664 2.31-.762 2.664-.123.446.164.442.345.321.142-.095 2.265-1.533 3.189-2.16.485.068.98.102 1.467.102 5.523 0 10-3.477 10-7.605S17.523 3 12 3z"/>
                   </svg>

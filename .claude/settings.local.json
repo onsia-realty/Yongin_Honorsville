@@ -9,7 +9,8 @@
       "Bash(npx next:*)",
       "Bash(mv:*)",
       "WebFetch(domain:cluster-honorsville.co.kr)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

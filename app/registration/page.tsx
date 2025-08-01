@@ -60,16 +60,32 @@ export default function RegistrationPage() {
         phone: formData.phone
       })
 
-      // 카카오톡/문자 알림 (실제 구현시 백엔드 API 필요)
-      const message = `[클러스터용인 경남아너스빌] 새로운 관심고객 등록
-      
-고객명: ${formData.name}
-연락처: ${formData.phone}
+      // 관리자에게 카카오톡/SMS 알림 발송
+      try {
+        const notificationResponse = await fetch('/api/send-notification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            timestamp: new Date().toLocaleString('ko-KR')
+          })
+        })
 
-등록시간: ${new Date().toLocaleString('ko-KR')}`
-
-      // 관리자에게 문자 발송 (실제로는 SMS API 사용)
-      console.log('SMS 발송:', message)
+        const notificationResult = await notificationResponse.json()
+        
+        if (notificationResult.success) {
+          console.log(`알림 발송 성공 (${notificationResult.method}):`, notificationResult.message)
+        } else {
+          console.error('알림 발송 실패:', notificationResult.error)
+          // 알림 발송 실패해도 고객 등록은 성공으로 처리
+        }
+      } catch (notificationError) {
+        console.error('알림 발송 중 오류:', notificationError)
+        // 알림 발송 실패해도 고객 등록은 성공으로 처리
+      }
       
       alert("관심고객 등록이 완료되었습니다.\n\n담당자가 빠른 시일 내에 연락드리겠습니다.\n\n감사합니다.")
       

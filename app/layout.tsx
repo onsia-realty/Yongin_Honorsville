@@ -7,7 +7,7 @@ import QuickButtons from '@/components/QuickButtons'
 
 export const metadata: Metadata = {
   title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
-  description: '동용인IC(예정)를 통해 삼성전자와 SK하이닉스 10분대 이동 가능. 서울~세종고속도로 더 가깝게, 삼성,SK하이닉스 10분대로 더 빠르게. 경기도 용인시 처인구 양지면 양지리 697번지 일원',
+  description: '용인 반도체클러스터 중심, 삼성·SK 10분대 프리미엄아파트. 동용인IC 인접, 997세대 대단지',
   keywords: '클러스터용인, 경남아너스빌, 용인아파트, 반도체클러스터, SK하이닉스, 삼성전자, 용인분양, 용인신도시, 처인구아파트, 양지아파트',
   generator: 'Next.js',
   applicationName: '클러스터용인 경남아너스빌',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
-    description: '동용인IC(예정)를 통해 삼성전자와 SK하이닉스 10분대 이동 가능. 서울~세종고속도로 더 가깝게, 삼성,SK하이닉스 10분대로 더 빠르게. 경기도 용인시 처인구 양지면 양지리 697번지 일원',
+    description: '용인 반도체클러스터 중심, 삼성·SK 10분대 프리미엄아파트. 동용인IC 인접, 997세대 대단지',
     url: 'https://yongin-honorsville.vercel.app',
     siteName: '클러스터용인 경남아너스빌',
     images: [
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
-    description: '동용인IC를 통해 삼성전자와 SK하이닉스 10분대 이동. 용인시 처인구 양지면 양지리 697번지',
+    description: '용인 반도체클러스터 중심, 삼성·SK 10분대 프리미엄아파트. 동용인IC 인접, 997세대 대단지',
     images: ['https://yongin-honorsville.vercel.app/대표홈페이지 썸네일.jpg'],
     creator: '@clusteryongin',
     site: '@clusteryongin',

@@ -165,31 +165,11 @@ export default function Header() {
                   <Link href="/floor-plan" className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-t-lg">
                     평면안내
                   </Link>
-                  {/* 평면도 미리보기 추가 */}
-                  <div className="px-4 pb-2 space-y-2 border-b">
-                    <div className="bg-gray-50 rounded p-2 hover:bg-gray-100 transition-colors">
-                      <Image
-                        src="/84a.jpg"
-                        alt="84A 평면도"
-                        width={150}
-                        height={100}
-                        className="w-full h-auto"
-                      />
-                      <p className="text-xs text-center mt-1 font-medium">84A</p>
-                    </div>
-                    <div className="bg-gray-50 rounded p-2 hover:bg-gray-100 transition-colors">
-                      <Image
-                        src="/123.jpg"
-                        alt="123 평면도"
-                        width={150}
-                        height={100}
-                        className="w-full h-auto"
-                      />
-                      <p className="text-xs text-center mt-1 font-medium">123</p>
-                    </div>
-                  </div>
-                  <Link href="/interior" className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-b-lg">
+                  <Link href="/interior" className="block px-4 py-2 text-sm hover:bg-blue-50">
                     인테리어
+                  </Link>
+                  <Link href="/e-model-house" className="block px-4 py-2 text-sm hover:bg-blue-50 rounded-b-lg">
+                    E-모델하우스
                   </Link>
                 </div>
               </div>
@@ -331,6 +311,9 @@ export default function Header() {
                   </Link>
                   <Link href="/interior" className="block py-2 text-sm hover:text-blue-600" onClick={() => setIsMenuOpen(false)}>
                     인테리어
+                  </Link>
+                  <Link href="/e-model-house" className="block py-2 text-sm hover:text-blue-600" onClick={() => setIsMenuOpen(false)}>
+                    E-모델하우스
                   </Link>
                 </div>
               </div>

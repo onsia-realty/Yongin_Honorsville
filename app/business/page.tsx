@@ -6,6 +6,7 @@ import Link from "next/link"
 import { MapPin, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 export default function BusinessPage() {
   return (
@@ -161,31 +162,7 @@ export default function BusinessPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="bg-blue-900 text-white py-16">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-6">더 자세한 정보가 필요하신가요?</h2>
-            <p className="text-xl mb-8 opacity-90">전문 상담원이 친절하게 안내해드립니다.</p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600">
-                <a href="tel:1668-5257">
-                  <Phone className="w-5 h-5 mr-2" />
-                  전화 상담하기
-                </a>
-              </Button>
-              
-              <Button asChild size="lg" className="bg-yellow-400 hover:bg-yellow-500 text-black">
-                <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
-                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.633 1.91 4.925 4.761 6.178-.206.716-.664 2.31-.762 2.664-.123.446.164.442.345.321.142-.095 2.265-1.533 3.189-2.16.485.068.98.102 1.467.102 5.523 0 10-3.477 10-7.605S17.523 3 12 3z"/>
-                  </svg>
-                  카카오톡 문의
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
+        <Footer />
       </main>
     </div>
   )

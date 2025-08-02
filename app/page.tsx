@@ -351,66 +351,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 관심고객 등록 섹션 */}
-          <div className="max-w-4xl mx-auto px-4 text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white drop-shadow-lg">관심고객 등록</h2>
-            <p className="text-xl md:text-2xl mb-8 text-white font-medium drop-shadow-lg">전문 상담원이 친절하게 안내해드립니다.</p>
-            
-            <form onSubmit={handleFormSubmit} className="flex flex-col md:flex-row items-center gap-3 md:gap-x-6 justify-center bg-white/20 backdrop-blur-sm rounded-full p-4 md:p-6 shadow-2xl">
-              <div className="flex items-center gap-3 w-full md:w-auto">
-                <div className="flex items-center gap-2">
-                  <Phone className="text-white h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
-                  <Input
-                    type="text"
-                    placeholder="고객명"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-white/90 border border-white/50 text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-white w-32 md:w-36 text-base px-4 py-2 rounded font-medium"
-                    required
-                  />
-                </div>
-                <Input
-                  type="tel"
-                  placeholder="휴대폰번호"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/[^\d]/g, "").slice(0, 11) })}
-                  className="bg-white/90 border border-white/50 text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-white w-36 md:w-44 text-base px-4 py-2 rounded font-medium"
-                  required
-                />
-              </div>
-              
-              <div className="flex items-center gap-4">
-                <div className="text-white text-sm md:text-base text-center font-medium">
-                  <p className="mb-1">개인정보 수집·이용 동의</p>
-                  <p className="text-xs opacity-90">(버튼 클릭 시 자동 동의됩니다)</p>
-                </div>
-                
-                <a 
-                  href="tel:1668-5257"
-                  className="flex-shrink-0 bg-green-500 hover:bg-green-600 text-white p-3 md:p-4 rounded-full transition-all shadow-xl hover:shadow-2xl"
-                  title="1668-5257로 전화걸기"
-                >
-                  <Phone className="w-6 h-6 md:w-8 md:h-8" />
-                </a>
-              </div>
-              
-              <Button
-                type="submit"
-                className="bg-orange-500 hover:bg-orange-600 text-white px-8 md:px-10 py-3 rounded-full text-base md:text-lg font-bold transition-all w-full md:w-auto shadow-xl hover:shadow-2xl"
-              >
-                보내기
-              </Button>
-            </form>
-            
-            <div className="mt-6">
-              <Button asChild className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-8 py-4 rounded-full font-bold text-lg transition-all shadow-xl hover:shadow-2xl">
-                <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-6 h-6" />
-                  카카오톡 문의하기
-                </a>
-              </Button>
-            </div>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* 견본주택 */}
@@ -476,37 +416,34 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 모바일 전용 큰 액션 버튼들 */}
-          <div className="mt-12 block md:hidden space-y-4">
-            <a 
-              href="tel:1668-5257"
-              className="block bg-green-500 hover:bg-green-600 text-white px-8 py-6 rounded-2xl text-xl font-bold shadow-2xl transition-all active:scale-95 text-center"
-            >
-              📞 1668-5257 전화상담
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">더 자세한 정보가 필요하신가요?</h2>
+          <p className="text-xl mb-8 opacity-90">전문 상담원이 친절하게 안내해드립니다.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="tel:1668-5257" className="inline-flex items-center justify-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold transition-all">
+              <Phone className="w-5 h-5 mr-2" />
+              전화 상담하기
             </a>
-            <button 
-              onClick={() => setIsVideoPopupOpen(true)}
-              className="block w-full bg-red-500 hover:bg-red-600 text-white px-8 py-6 rounded-2xl text-xl font-bold shadow-2xl transition-all active:scale-95"
-            >
-              ▶ 홍보영상 보기
-            </button>
-            <Link 
-              href="/registration"
-              className="block bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-2xl text-xl font-bold shadow-2xl transition-all active:scale-95 text-center"
-            >
-              📝 관심고객 등록
-            </Link>
+            <a href="/directions" className="inline-flex items-center justify-center px-8 py-3 bg-teal-500 hover:bg-teal-600 text-white rounded-full font-bold transition-all">
+              <MapPin className="w-5 h-5 mr-2" />
+              오시는길 안내
+            </a>
+            <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-8 py-3 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full font-bold transition-all">
+              <MessageCircle className="w-5 h-5 mr-2" />
+              카카오톡 문의
+            </a>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-gray-900 text-white py-16 footer-section">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-            <div className="text-xl font-bold mb-4 md:mb-0">HONORSVILLE</div>
-            <div className="text-2xl font-bold">1668-5257</div>
-          </div>
 
           <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between">
             <div className="space-y-2 text-sm text-gray-400">
@@ -523,9 +460,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-8 md:mt-0">
-              <div className="w-32 h-20 bg-white/10 rounded flex items-center justify-center text-xs">건설사 로고</div>
-            </div>
           </div>
         </div>
       </footer>

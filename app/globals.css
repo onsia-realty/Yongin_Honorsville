@@ -351,3 +351,16 @@
   .pc { display: block !important; }
   .mobile { display: none !important; }
 }
+
+/* QuickButtons spacing for footer */
+@media (min-width: 768px) {
+  .footer-section {
+    padding-bottom: 100px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-section {
+    padding-bottom: 120px !important;
+  }
+}

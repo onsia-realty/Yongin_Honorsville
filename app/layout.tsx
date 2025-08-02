@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import ViewportHeight from '@/components/ViewportHeight'
+import QuickButtons from '@/components/QuickButtons'
 
 export const metadata: Metadata = {
   title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'google-site-verification-code',
-    naver: 'naver-site-verification-code',
+    naver: '21e431fabface3d904e1968338dd3fd66dd05ba3',
   },
   viewport: {
     width: 'device-width',
@@ -130,8 +131,8 @@ export default function RootLayout({
           }
         `}</style>
         
-        {/* 네이버 사이트 인증 (선택사항) */}
-        {/* <meta name="naver-site-verification" content="인증코드" /> */}
+        {/* 네이버 사이트 인증 */}
+        <meta name="naver-site-verification" content="21e431fabface3d904e1968338dd3fd66dd05ba3" />
         
         {/* 구글 사이트 인증 (선택사항) */}
         {/* <meta name="google-site-verification" content="인증코드" /> */}
@@ -139,6 +140,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ViewportHeight />
         {children}
+        <QuickButtons />
         
         {/* 카카오 SDK (선택사항) */}
         {/* <script src="https://developers.kakao.com/sdk/js/kakao.min.js" async /> */}

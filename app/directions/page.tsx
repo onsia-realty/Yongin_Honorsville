@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Phone, MapPin, Car, Bus, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 export default function DirectionsPage() {
   return (
@@ -232,35 +233,7 @@ export default function DirectionsPage() {
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section className="py-16 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-6">방문 예약 및 문의</h2>
-            <p className="text-xl mb-8 opacity-90">
-              견본주택 방문 전 미리 예약하시면 더욱 편리하게 관람하실 수 있습니다.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-lg px-8 py-4">
-                <a href="tel:1668-5257">
-                  <Phone className="w-6 h-6 mr-2" />
-                  전화 예약하기
-                </a>
-              </Button>
-              
-              <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-lg px-8 py-4">
-                <a href="https://open.kakao.com/o/sen4dWJh" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-6 h-6 mr-2" />
-                  카카오톡 문의
-                </a>
-              </Button>
-            </div>
-            
-            <div className="mt-8 text-sm opacity-80">
-              <p>운영시간: 평일/주말 오전 10시 ~ 오후 7시 (매주 화요일 휴관)</p>
-            </div>
-          </div>
-        </section>
+        <Footer />
       </main>
     </div>
   )

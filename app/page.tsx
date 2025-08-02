@@ -80,8 +80,8 @@ export default function HomePage() {
       // Google Apps Script URL
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz7twzCnPcTloLXdZ2umJVWyRd5uh88eIHn7W5P39dO5b4NLeD6Vm4COv5JpMTulDO/exec'
       
-      // Google Sheets로 데이터 전송
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      // 1. Google Sheets로 데이터 전송
+      const googleResponse = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain',
@@ -94,7 +94,21 @@ export default function HomePage() {
         })
       })
 
-      // no-cors 모드에서는 응답을 읽을 수 없으므로 바로 성공 처리
+      // 2. SMS 알림 발송
+      const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+      await fetch('/api/send-notification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          timestamp: timestamp
+        })
+      })
+
+      // 성공 알림
       alert("관심고객 등록이 완료되었습니다.\n빠른 시일 내에 연락드리겠습니다.")
       
       // 폼 초기화

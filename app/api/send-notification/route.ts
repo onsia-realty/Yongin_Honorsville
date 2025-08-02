@@ -1,59 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// NHN Toast API 설정
-const SMS_APP_KEY = process.env.NHN_TOAST_APP_KEY!
-const SMS_SECRET_KEY = process.env.NHN_TOAST_SECRET_KEY!
-const KAKAO_APP_KEY = process.env.NHN_TOAST_KAKAO_APP_KEY!
-const KAKAO_SECRET_KEY = process.env.NHN_TOAST_KAKAO_SECRET_KEY!
-const KAKAO_SENDER_KEY = process.env.KAKAO_SENDER_KEY!
+// 알리고 API 설정
+const ALIGO_API_KEY = process.env.ALIGO_API_KEY || 'YOUR_API_KEY'
+const ALIGO_USER_ID = process.env.ALIGO_USER_ID || 'YOUR_USER_ID'
 const SMS_SENDER_NUMBER = process.env.SMS_SENDER_NUMBER || '1668-5257'
 const ADMIN_PHONE = process.env.ADMIN_PHONE || '010-7781-9297'
-const TEMPLATE_CODE = process.env.KAKAO_TEMPLATE_CODE || 'CUSTOMER_REGISTRATION'
 
 export async function POST(request: NextRequest) {
   try {
     const { name, phone, timestamp } = await request.json()
-    const results = { sms: false, kakao: false }
 
-    // 1. 카카오톡 알림톡 발송 시도 (우선)
-    try {
-      const kakaoResponse = await fetch(
-        `https://api-alimtalk.cloud.toast.com/alimtalk/v2.0/appkeys/${KAKAO_APP_KEY}/messages`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Secret-Key': KAKAO_SECRET_KEY
-          },
-          body: JSON.stringify({
-            senderKey: KAKAO_SENDER_KEY,
-            templateCode: TEMPLATE_CODE,
-            recipientList: [{
-              recipientNo: ADMIN_PHONE,
-              templateParameter: {
-                name: name,
-                phone: phone,
-                timestamp: timestamp
-              }
-            }]
-          })
-        }
-      )
-
-      const kakaoResult = await kakaoResponse.json()
-      
-      if (kakaoResult.header.resultCode === 0) {
-        results.kakao = true
-        console.log('카카오톡 발송 성공')
-      }
-    } catch (kakaoError) {
-      console.error('카카오톡 발송 실패:', kakaoError)
-    }
-
-    // 2. 카카오톡 실패 시 SMS 발송
-    if (!results.kakao) {
-      try {
-        const message = `[클러스터용인 경남아너스빌]
+    // 알리고 SMS 발송
+    const message = `[클러스터용인 경남아너스빌]
 새 관심고객 등록!
 
 성함: ${name}
@@ -62,45 +20,64 @@ export async function POST(request: NextRequest) {
 
 즉시 연락 요망`
 
-        const smsResponse = await fetch(
-          `https://api-sms.cloud.toast.com/sms/v3.0/appKeys/${SMS_APP_KEY}/sender/sms`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Secret-Key': SMS_SECRET_KEY
-            },
-            body: JSON.stringify({
-              body: message,
-              sendNo: SMS_SENDER_NUMBER,
-              recipientList: [{
-                recipientNo: ADMIN_PHONE,
-                countryCode: '82'
-              }]
-            })
-          }
-        )
-
-        const smsResult = await smsResponse.json()
-        
-        if (smsResult.header.resultCode === 0) {
-          results.sms = true
-          console.log('SMS 발송 성공')
-        }
-      } catch (smsError) {
-        console.error('SMS 발송 실패:', smsError)
-      }
-    }
-
-    // 결과 반환
-    if (results.kakao || results.sms) {
-      return NextResponse.json({ 
-        success: true, 
-        message: results.kakao ? '카카오톡 발송 완료' : 'SMS 발송 완료',
-        method: results.kakao ? 'kakao' : 'sms'
+    // 알리고 API 호출을 위한 FormData 생성
+    const formData = new URLSearchParams()
+    formData.append('key', ALIGO_API_KEY)
+    formData.append('user_id', ALIGO_USER_ID)
+    formData.append('sender', SMS_SENDER_NUMBER)
+    formData.append('receiver', ADMIN_PHONE)
+    formData.append('msg', message)
+    formData.append('title', '관심고객 등록 알림')
+    
+    try {
+      const response = await fetch('https://apis.aligo.in/send/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
       })
-    } else {
-      throw new Error('모든 발송 방법 실패')
+
+      const result = await response.json()
+      
+      if (result.result_code === '1') {
+        console.log('알리고 SMS 발송 성공:', result)
+        
+        // 고객에게도 확인 문자 발송
+        const customerMessage = `[클러스터용인 경남아너스빌]
+${name}님, 관심고객 등록이 완료되었습니다.
+
+빠른 시일 내에 전문 상담원이 연락드리겠습니다.
+
+문의: ${SMS_SENDER_NUMBER}`
+
+        const customerFormData = new URLSearchParams()
+        customerFormData.append('key', ALIGO_API_KEY)
+        customerFormData.append('user_id', ALIGO_USER_ID)
+        customerFormData.append('sender', SMS_SENDER_NUMBER)
+        customerFormData.append('receiver', phone)
+        customerFormData.append('msg', customerMessage)
+        customerFormData.append('title', '관심고객 등록 완료')
+        
+        await fetch('https://apis.aligo.in/send/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: customerFormData.toString()
+        })
+        
+        return NextResponse.json({ 
+          success: true, 
+          message: 'SMS 발송 완료',
+          method: 'aligo_sms'
+        })
+      } else {
+        throw new Error(`알리고 SMS 발송 실패: ${result.message}`)
+      }
+    } catch (smsError) {
+      console.error('SMS 발송 실패:', smsError)
+      throw smsError
     }
 
   } catch (error) {

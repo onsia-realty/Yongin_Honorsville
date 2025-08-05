@@ -96,17 +96,31 @@ export default function HomePage() {
 
       // 2. SMS 알림 발송
       const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
-      await fetch('/api/send-notification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          timestamp: timestamp
+      try {
+        const smsResponse = await fetch('/api/send-notification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            timestamp: timestamp
+          })
         })
-      })
+        
+        const smsResult = await smsResponse.json()
+        
+        if (!smsResponse.ok) {
+          console.error('SMS 발송 실패:', smsResult)
+          // SMS 실패해도 등록은 성공으로 처리
+        } else {
+          console.log('SMS 발송 성공:', smsResult)
+        }
+      } catch (smsError) {
+        console.error('SMS 발송 오류:', smsError)
+        // SMS 실패해도 등록은 성공으로 처리
+      }
 
       // 성공 알림
       alert("관심고객 등록이 완료되었습니다.\n빠른 시일 내에 연락드리겠습니다.")
@@ -461,7 +475,8 @@ export default function HomePage() {
 
           <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between">
             <div className="space-y-2 text-sm text-gray-400">
-              <p>(주)온시아 | 사업자등록번호 : 214-88-01749</p>
+              <p className="text-lg font-bold text-blue-400">현장명 : 용인 클러스터 경남 아너스빌</p>
+              <p>사업자등록번호 : 243-88-01749</p>
               <p>
                 <span className="text-blue-400">현장</span> 경기도 용인시 처인구 양지면 양지리 697번지 일원
               </p>
@@ -481,58 +496,88 @@ export default function HomePage() {
       {/* Floating Elements */}
       {/* 관심고객등록 버튼 */}
       {/* 유튜브 버튼들 - 모바일은 상단 고정, PC는 우측 고정 */}
-      {/* 모바일 버전 - 상단 3개 고정 */}
-      <div className="fixed top-[64px] left-0 right-0 flex gap-0 z-40 md:hidden">
-        {/* 영상1 */}
-        <a
-          href="https://youtu.be/YWB5Yy6LOmg"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-1/3 aspect-video bg-white overflow-hidden"
-          title="홍보영상 1"
-        >
-          <Image
-            src="/동영상 썸네일1.png"
-            alt="영상1"
-            width={120}
-            height={68}
-            className="w-full h-full object-cover"
-          />
-        </a>
+      {/* 모바일 버전 - 상단 고정 */}
+      <div className="fixed top-[64px] left-0 right-0 z-40 md:hidden bg-white">
+        {/* 동영상 3개 */}
+        <div className="flex gap-0">
+          {/* 영상1 */}
+          <a
+            href="https://youtu.be/YWB5Yy6LOmg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-1/3 aspect-video bg-white overflow-hidden"
+            title="홍보영상 1"
+          >
+            <Image
+              src="/동영상 썸네일1.png"
+              alt="영상1"
+              width={120}
+              height={68}
+              className="w-full h-full object-cover"
+            />
+          </a>
+          
+          {/* 영상2 */}
+          <a
+            href="https://youtu.be/7gQ347EIX3I"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-1/3 aspect-video bg-white overflow-hidden"
+            title="홍보영상 2"
+          >
+            <Image
+              src="/동영상 썸네일2.png"
+              alt="영상2"
+              width={120}
+              height={68}
+              className="w-full h-full object-cover"
+            />
+          </a>
+          
+          {/* 영상3 */}
+          <a
+            href="https://youtu.be/vOFsxZvtfOM"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-1/3 aspect-video bg-white overflow-hidden"
+            title="홍보영상 3"
+          >
+            <Image
+              src="/동영상 썸네일3.png"
+              alt="영상3"
+              width={120}
+              height={68}
+              className="w-full h-full object-cover"
+            />
+          </a>
+        </div>
         
-        {/* 영상2 */}
-        <a
-          href="https://youtu.be/7gQ347EIX3I"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-1/3 aspect-video bg-white overflow-hidden"
-          title="홍보영상 2"
-        >
-          <Image
-            src="/동영상 썸네일2.png"
-            alt="영상2"
-            width={120}
-            height={68}
-            className="w-full h-full object-cover"
-          />
-        </a>
+        {/* 흰색 여백 구분선 */}
+        <div className="h-1 bg-white"></div>
         
-        {/* 영상3 */}
-        <a
-          href="https://youtu.be/vOFsxZvtfOM"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-1/3 aspect-video bg-white overflow-hidden"
-          title="홍보영상 3"
+        {/* E모델하우스 바로가기 - 동영상 3개와 같은 너비 */}
+        <Link
+          href="/e-model-house"
+          className="relative block w-full h-20 overflow-hidden"
         >
+          {/* 배경 이미지 */}
           <Image
-            src="/동영상 썸네일3.png"
-            alt="영상3"
-            width={120}
-            height={68}
-            className="w-full h-full object-cover"
+            src="/인테리어.jpg"
+            alt="인테리어 배경"
+            fill
+            className="object-cover"
           />
-        </a>
+          {/* 레드 계열 오버레이 */}
+          <div className="absolute inset-0 bg-gradient-to-r from-red-900/80 to-orange-900/80" />
+          {/* 텍스트 */}
+          <div className="absolute inset-0 flex items-center justify-center gap-2 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span className="font-bold text-base">E모델하우스 바로가기</span>
+          </div>
+        </Link>
       </div>
       
       {/* PC 버전 - 우측 고정 (3개로 변경, 크기 증가) */}
@@ -587,6 +632,32 @@ export default function HomePage() {
             className="w-full h-full object-cover"
           />
         </a>
+        
+        {/* E모델하우스 바로가기 - 동영상과 같은 너비 */}
+        <Link
+          href="/e-model-house"
+          className="relative block w-36 h-24 rounded-lg shadow-2xl hover:scale-110 transition-transform overflow-hidden border-2 border-red-300"
+        >
+          {/* 배경 이미지 */}
+          <Image
+            src="/인테리어.jpg"
+            alt="인테리어 배경"
+            width={144}
+            height={96}
+            className="w-full h-full object-cover"
+          />
+          {/* 레드 계열 오버레이 */}
+          <div className="absolute inset-0 bg-gradient-to-r from-red-900/80 to-orange-900/80" />
+          {/* 텍스트 */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span className="font-bold text-sm">E모델하우스</span>
+            <span className="text-xs mt-1">바로가기</span>
+          </div>
+        </Link>
       </div>
       {/* 관심고객등록 버튼 - 영상3 밑에 배치 */}
       

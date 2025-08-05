@@ -1,18 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SolapiMessageService } from 'solapi'
 
-// 솔라피 설정
-const SOLAPI_API_KEY = process.env.SOLAPI_API_KEY!
-const SOLAPI_API_SECRET = process.env.SOLAPI_API_SECRET!
-const SMS_SENDER_NUMBER = process.env.SMS_SENDER_NUMBER || '1668-5257'
-const ADMIN_PHONE = process.env.ADMIN_PHONE || '010-7781-9297'
-
-// 솔라피 메시지 서비스 초기화
-const messageService = new SolapiMessageService(SOLAPI_API_KEY, SOLAPI_API_SECRET)
+export const runtime = 'nodejs'
+export const maxDuration = 10
 
 export async function POST(request: NextRequest) {
   try {
     const { name, phone, timestamp } = await request.json()
+    
+    // 환경 변수 확인
+    const SOLAPI_API_KEY = process.env.SOLAPI_API_KEY
+    const SOLAPI_API_SECRET = process.env.SOLAPI_API_SECRET
+    const SMS_SENDER_NUMBER = process.env.SMS_SENDER_NUMBER || '1668-5257'
+    const ADMIN_PHONE = process.env.ADMIN_PHONE || '010-7781-9297'
+    
+    console.log('환경 변수 상태:', {
+      hasApiKey: !!SOLAPI_API_KEY,
+      hasApiSecret: !!SOLAPI_API_SECRET,
+      senderNumber: SMS_SENDER_NUMBER,
+      adminPhone: ADMIN_PHONE,
+      environment: process.env.NODE_ENV,
+      vercel: process.env.VERCEL
+    })
+    
+    if (!SOLAPI_API_KEY || !SOLAPI_API_SECRET) {
+      console.error('솔라피 API 키가 설정되지 않았습니다.')
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: '서버 설정 오류: API 키가 누락되었습니다.'
+        },
+        { status: 500 }
+      )
+    }
+    
+    // 솔라피 메시지 서비스 초기화
+    const messageService = new SolapiMessageService(SOLAPI_API_KEY, SOLAPI_API_SECRET)
 
     // 관리자에게 발송할 메시지
     const adminMessage = `[클러스터용인 경남아너스빌]

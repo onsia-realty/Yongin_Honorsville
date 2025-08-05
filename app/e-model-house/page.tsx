@@ -1,120 +1,61 @@
-'use client'
-
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight, Maximize2, Home } from 'lucide-react'
-
-const rooms = [
-  { id: 'living', name: '거실', image: '/model-house/living-room.jpg' },
-  { id: 'kitchen', name: '주방', image: '/model-house/kitchen.jpg' },
-  { id: 'master', name: '안방', image: '/model-house/master-bedroom.jpg' },
-  { id: 'bedroom1', name: '침실1', image: '/model-house/bedroom1.jpg' },
-  { id: 'bedroom2', name: '침실2', image: '/model-house/bedroom2.jpg' },
-  { id: 'bathroom', name: '욕실', image: '/model-house/bathroom.jpg' },
-]
+import Link from "next/link"
+import { Phone, MapPin, MessageCircle } from "lucide-react"
 
 export default function EModelHouse() {
-  const [currentRoom, setCurrentRoom] = useState(0)
-  const [isFullscreen, setIsFullscreen] = useState(false)
-
-  const nextRoom = () => {
-    setCurrentRoom((prev) => (prev + 1) % rooms.length)
-  }
-
-  const prevRoom = () => {
-    setCurrentRoom((prev) => (prev - 1 + rooms.length) % rooms.length)
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative h-[40vh] bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
+      <section className="relative h-[40vh] bg-gradient-to-r from-[#1a237e] to-[#512da8] flex items-center justify-center">
         <div className="relative z-10 text-center text-white">
-          <h1 className="text-5xl font-bold mb-4">E-모델하우스</h1>
+          <h1 className="text-5xl font-bold mb-4">e모델하우스</h1>
           <p className="text-xl">클러스터용인 경남아너스빌을 미리 체험해보세요</p>
         </div>
       </section>
 
-      {/* Model House Viewer */}
-      <section className="py-16">
+      {/* Virtual Tour */}
+      <section className="py-8">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Room Navigation */}
-          <div className="flex justify-center mb-8 space-x-2 flex-wrap">
-            {rooms.map((room, index) => (
-              <Button
-                key={room.id}
-                variant={currentRoom === index ? 'default' : 'outline'}
-                onClick={() => setCurrentRoom(index)}
-                className="mb-2"
-              >
-                {room.name}
-              </Button>
-            ))}
+          <div className="text-center">
+            <iframe 
+              allowFullScreen
+              frameBorder="0" 
+              src="https://cluster-honorsville.co.kr/vtour/tour.html"
+              style={{ marginTop: '1em', width: '100%', height: '80vh' }}
+              className="rounded-lg shadow-lg"
+            />
           </div>
+        </div>
+      </section>
 
-          {/* 360 Viewer */}
-          <div className={`relative ${isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'aspect-video'} bg-gray-900 rounded-lg overflow-hidden`}>
-            <div className="absolute top-4 right-4 z-10 flex gap-2">
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={() => setIsFullscreen(!isFullscreen)}
-              >
-                <Maximize2 className="w-4 h-4" />
-              </Button>
-            </div>
-
-            {/* Room Image */}
-            <div className="relative w-full h-full flex items-center justify-center">
-              <Image
-                src={rooms[currentRoom].image}
-                alt={rooms[currentRoom].name}
-                fill
-                className="object-contain"
-                priority
-              />
-              
-              {/* Navigation Arrows */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-4 bg-black/50 hover:bg-black/70 text-white"
-                onClick={prevRoom}
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-4 bg-black/50 hover:bg-black/70 text-white"
-                onClick={nextRoom}
-              >
-                <ChevronRight className="w-6 h-6" />
-              </Button>
-            </div>
-
-            {/* Room Info */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-              <h2 className="text-2xl font-bold text-white mb-2">{rooms[currentRoom].name}</h2>
-              <p className="text-gray-200">360도 뷰로 공간을 둘러보세요</p>
-            </div>
-          </div>
-
-          {/* Features */}
-          <div className="mt-16 grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">실제 크기 체험</h3>
-              <p className="text-gray-600">실제 평형과 동일한 크기로 구현된 모델하우스를 체험해보세요.</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">인테리어 옵션</h3>
-              <p className="text-gray-600">다양한 인테리어 옵션을 미리 확인하고 선택할 수 있습니다.</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-3">VR 체험 지원</h3>
-              <p className="text-gray-600">VR 기기를 통해 더욱 실감나는 공간 체험이 가능합니다.</p>
-            </div>
+      {/* Contact Section */}
+      <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">더 자세한 정보가 필요하신가요?</h2>
+          <p className="text-xl mb-8 opacity-90">전문 상담원이 친절하게 안내해드립니다.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="tel:1668-5257" 
+              className="inline-flex items-center justify-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold transition-all"
+            >
+              <Phone className="w-5 h-5 mr-2" />
+              전화 상담하기
+            </a>
+            <Link 
+              href="/directions" 
+              className="inline-flex items-center justify-center px-8 py-3 bg-teal-500 hover:bg-teal-600 text-white rounded-full font-bold transition-all"
+            >
+              <MapPin className="w-5 h-5 mr-2" />
+              오시는길 안내
+            </Link>
+            <a 
+              href="https://open.kakao.com/o/sen4dWJh" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center justify-center px-8 py-3 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full font-bold transition-all"
+            >
+              <MessageCircle className="w-5 h-5 mr-2" />
+              카카오톡 문의
+            </a>
           </div>
         </div>
       </section>

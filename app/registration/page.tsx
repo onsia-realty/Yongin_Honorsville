@@ -14,10 +14,34 @@ export default function RegistrationPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    
+    if (name === 'phone') {
+      // 숫자만 추출
+      const numbers = value.replace(/[^0-9]/g, '')
+      
+      // 11자리 제한
+      if (numbers.length > 11) {
+        return
+      }
+      
+      // 자동 포맷팅
+      let formattedValue = numbers
+      if (numbers.length >= 4 && numbers.length <= 7) {
+        formattedValue = `${numbers.slice(0, 3)}-${numbers.slice(3)}`
+      } else if (numbers.length >= 8) {
+        formattedValue = `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`
+      }
+      
+      setFormData(prev => ({
+        ...prev,
+        phone: formattedValue
+      }))
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,8 +84,14 @@ export default function RegistrationPage() {
         phone: formData.phone
       })
 
-      // 관리자에게 카카오톡/SMS 알림 발송
+      // 관리자에게 SMS 알림 발송
       try {
+        console.log('SMS 발송 시작:', {
+          name: formData.name,
+          phone: formData.phone,
+          timestamp: new Date().toLocaleString('ko-KR')
+        })
+        
         const notificationResponse = await fetch('/api/send-notification', {
           method: 'POST',
           headers: {
@@ -70,20 +100,24 @@ export default function RegistrationPage() {
           body: JSON.stringify({
             name: formData.name,
             phone: formData.phone,
-            timestamp: new Date().toLocaleString('ko-KR')
+            timestamp: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
           })
         })
 
+        console.log('SMS API 응답 상태:', notificationResponse.status)
         const notificationResult = await notificationResponse.json()
+        console.log('SMS API 응답 내용:', notificationResult)
         
         if (notificationResult.success) {
-          console.log(`알림 발송 성공 (${notificationResult.method}):`, notificationResult.message)
+          console.log(`SMS 발송 성공:`, notificationResult)
         } else {
-          console.error('알림 발송 실패:', notificationResult.error)
+          console.error('SMS 발송 실패 - 상세 오류:', notificationResult)
+          // 디버깅을 위해 alert 추가 (나중에 제거 가능)
+          // alert(`SMS 발송 실패: ${notificationResult.error || '알 수 없는 오류'}`)
           // 알림 발송 실패해도 고객 등록은 성공으로 처리
         }
       } catch (notificationError) {
-        console.error('알림 발송 중 오류:', notificationError)
+        console.error('SMS 발송 중 오류 (catch):', notificationError)
         // 알림 발송 실패해도 고객 등록은 성공으로 처리
       }
       

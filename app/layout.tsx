@@ -144,6 +144,13 @@ export default function RootLayout({
         
         {/* 카카오 SDK (선택사항) */}
         {/* <script src="https://developers.kakao.com/sdk/js/kakao.min.js" async /> */}
+        
+        {/* Smartlog */}
+        <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `
+          var hpt_info={'_account':'UHPT-32957', '_server': 'a29'};
+        ` }} />
+        <script language="javascript" src="//cdn.smlog.co.kr/core/smart.js" charSet="utf-8"></script>
+        <noscript><img src="//a29.smlog.co.kr/smart_bda.php?_account=32957" style={{display:'none',width:0,height:0}} border="0"/></noscript>
       </body>
     </html>
   )

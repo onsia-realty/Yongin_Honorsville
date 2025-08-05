@@ -48,7 +48,8 @@ export default function Footer() {
 
           {/* 회사정보 */}
           <div className="space-y-3 text-sm text-gray-600 mb-6">
-            <p className="font-semibold">(주)온시아 | 사업자등록번호 : 214-88-01749</p>
+            <p className="text-lg font-bold text-blue-900">현장명 : 용인 클러스터 경남 아너스빌</p>
+            <p className="font-semibold">사업자등록번호 : 243-88-01749</p>
             <p>
               <span className="text-blue-600 font-semibold">현장</span> 경기도 용인시 처인구 양지면 양지리 697번지 일원
             </p>

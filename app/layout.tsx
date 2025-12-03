@@ -167,7 +167,7 @@ export default function RootLayout({
         {/* ONSIA Tracker - 방문자 추적 */}
         <AnalyticsTracker
           config={{
-            apiEndpoint: process.env.NEXT_PUBLIC_TRACKER_API || 'https://tracker.onsia.city/api/analytics',
+            apiEndpoint: process.env.NEXT_PUBLIC_TRACKER_API || 'https://tracker-1jtn6j9qy-realtors77-7871s-projects.vercel.app/api/analytics',
             siteSlug: 'yongin-honorsville',
             trackClicks: true,
             trackScroll: true,

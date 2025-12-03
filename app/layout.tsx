@@ -4,6 +4,7 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import ViewportHeight from '@/components/ViewportHeight'
 import QuickButtons from '@/components/QuickButtons'
+import AnalyticsTracker from '@/components/analytics/AnalyticsTracker'
 
 export const metadata: Metadata = {
   title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
@@ -162,6 +163,19 @@ export default function RootLayout({
           height="0" width="0" style="display:none;visibility:hidden"></iframe>
         ` }} />
         {/* End Google Tag Manager (noscript) */}
+
+        {/* ONSIA Tracker - 방문자 추적 */}
+        <AnalyticsTracker
+          config={{
+            apiEndpoint: process.env.NEXT_PUBLIC_TRACKER_API || 'https://tracker.onsia.city/api/analytics',
+            siteSlug: 'yongin-honorsville',
+            trackClicks: true,
+            trackScroll: true,
+            trackMouse: true,
+            debugMode: process.env.NODE_ENV === 'development',
+          }}
+        />
+
         <ViewportHeight />
         {children}
         <QuickButtons />

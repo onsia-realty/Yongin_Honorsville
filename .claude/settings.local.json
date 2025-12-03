@@ -10,7 +10,8 @@
       "Bash(mv:*)",
       "WebFetch(domain:cluster-honorsville.co.kr)",
       "Bash(ls:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "mcp__playwright__browser_navigate"
     ],
     "deny": []
   }

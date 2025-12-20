@@ -60,29 +60,67 @@ export default function RegistrationPage() {
     setIsSubmitting(true)
 
     try {
-      // 문자 발송 시뮬레이션
-      // Google Sheets에 데이터 저장
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzeqe6lDq75BkvIJ8r0jAfyO59H9hDrOc9cXRMy9zl3uPSlSjTDJ3JDXML3w67SaDme/exec'
-      
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', // CORS 문제 해결
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: JSON.stringify({
+      // 1. Vercel Postgres DB에 저장 (우선순위 1)
+      try {
+        console.log('DB 저장 시작:', {
+          site: 'yongin-honorsville',
           name: formData.name,
           phone: formData.phone,
-          timestamp: new Date().toLocaleString('ko-KR'),
-          source: '관심고객 등록 페이지'
+          source: 'registration-page'
         })
-      })
-      
-      // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
-      console.log('Registration data sent:', {
-        name: formData.name,
-        phone: formData.phone
-      })
+
+        const dbResponse = await fetch('/api/save-customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            site: 'yongin-honorsville',
+            name: formData.name,
+            phone: formData.phone,
+            inquiry: '관심고객 등록',
+            source: 'registration-page'
+          })
+        })
+
+        const dbResult = await dbResponse.json()
+        console.log('DB 저장 결과:', dbResult)
+
+        if (!dbResult.success) {
+          console.error('DB 저장 실패:', dbResult.error)
+        }
+      } catch (dbError) {
+        console.error('DB 저장 중 오류:', dbError)
+        // DB 저장 실패해도 계속 진행 (Google Sheets 백업)
+      }
+
+      // 2. Google Sheets에 데이터 저장 (백업)
+      try {
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzeqe6lDq75BkvIJ8r0jAfyO59H9hDrOc9cXRMy9zl3uPSlSjTDJ3JDXML3w67SaDme/exec'
+
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors', // CORS 문제 해결
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            timestamp: new Date().toLocaleString('ko-KR'),
+            source: '관심고객 등록 페이지'
+          })
+        })
+
+        // no-cors 모드에서는 응답을 읽을 수 없으므로 성공으로 간주
+        console.log('Google Sheets 전송 완료:', {
+          name: formData.name,
+          phone: formData.phone
+        })
+      } catch (sheetsError) {
+        console.error('Google Sheets 저장 실패:', sheetsError)
+        // 시트 저장 실패해도 계속 진행 (SMS는 보내야 함)
+      }
 
       // 관리자에게 SMS 알림 발송
       try {

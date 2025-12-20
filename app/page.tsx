@@ -14,6 +14,9 @@ import Header from "@/components/Header"
 
 export default function HomePage() {
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false)
+  const [isFirstImagePopupOpen, setIsFirstImagePopupOpen] = useState(false)
+  const [isSecondImagePopupOpen, setIsSecondImagePopupOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -26,6 +29,16 @@ export default function HomePage() {
       setIsVideoPopupOpen(true)
     }, 1000)
     return () => clearTimeout(timer)
+  }, [])
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   // 스크롤 애니메이션 효과
@@ -77,24 +90,60 @@ export default function HomePage() {
     }
 
     try {
-      // Google Apps Script URL
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz7twzCnPcTloLXdZ2umJVWyRd5uh88eIHn7W5P39dO5b4NLeD6Vm4COv5JpMTulDO/exec'
-      
-      // 1. Google Sheets로 데이터 전송
-      const googleResponse = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          inquiry: formData.inquiry || '관심고객 등록',
-          source: '클러스터용인 경남아너스빌 웹사이트'
+      // 1. Vercel Postgres DB에 저장
+      try {
+        const dbResponse = await fetch('/api/save-customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            site: 'yongin-honorsville',
+            name: formData.name,
+            phone: formData.phone,
+            inquiry: formData.inquiry || '관심고객 등록',
+            source: 'homepage-bottom-form'
+          })
         })
-      })
 
-      // 2. SMS 알림 발송
+        const dbResult = await dbResponse.json()
+
+        if (!dbResponse.ok) {
+          console.error('DB 저장 실패:', dbResult)
+          // DB 실패해도 계속 진행
+        } else {
+          console.log('DB 저장 성공:', dbResult)
+        }
+      } catch (dbError) {
+        console.error('DB 저장 오류:', dbError)
+        // DB 실패해도 계속 진행
+      }
+
+      // 2. Google Sheets로 데이터 전송 (백업)
+      try {
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxz7twzCnPcTloLXdZ2umJVWyRd5uh88eIHn7W5P39dO5b4NLeD6Vm4COv5JpMTulDO/exec'
+
+        const googleResponse = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            inquiry: formData.inquiry || '관심고객 등록',
+            source: '클러스터용인 경남아너스빌 웹사이트'
+          })
+        })
+
+        if (!googleResponse.ok) {
+          console.error('Google Sheets 저장 실패')
+        }
+      } catch (googleError) {
+        console.error('Google Sheets 저장 오류:', googleError)
+      }
+
+      // 3. SMS 알림 발송
       const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
       try {
         const smsResponse = await fetch('/api/send-notification', {
@@ -730,7 +779,20 @@ export default function HomePage() {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-4xl">
             <button
-              onClick={() => setIsVideoPopupOpen(false)}
+              onClick={() => {
+                setIsVideoPopupOpen(false)
+                // 비디오 팝업 닫은 후 250ms 뒤에 이미지 팝업 열기
+                setTimeout(() => {
+                  if (isMobile) {
+                    // 모바일: 첫 번째 이미지만
+                    setIsFirstImagePopupOpen(true)
+                  } else {
+                    // PC: 두 이미지 모두
+                    setIsFirstImagePopupOpen(true)
+                    setIsSecondImagePopupOpen(true)
+                  }
+                }, 250)
+              }}
               className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300"
             >
               ×
@@ -746,6 +808,101 @@ export default function HomePage() {
                 allowFullScreen
                 className="w-full h-full"
               ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PC: 두 이미지 가로 나란히 */}
+      {!isMobile && (isFirstImagePopupOpen || isSecondImagePopupOpen) && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="relative w-full max-w-[1000px]">
+            {/* 닫기 버튼 */}
+            <button
+              onClick={() => {
+                setIsFirstImagePopupOpen(false)
+                setIsSecondImagePopupOpen(false)
+              }}
+              className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300 z-10"
+            >
+              ×
+            </button>
+
+            {/* 두 이미지 가로 배치 */}
+            <div className="flex gap-4">
+              {/* 첫 번째 이미지 */}
+              <div className="flex-1 bg-white rounded-lg overflow-hidden">
+                <Image
+                  src="/popup-image.png"
+                  alt="클러스터용인 경남아너스빌 팝업"
+                  width={440}
+                  height={627}
+                  className="w-full h-auto"
+                />
+              </div>
+
+              {/* 두 번째 이미지 */}
+              <div className="flex-1 bg-white rounded-lg overflow-hidden">
+                <Image
+                  src="/popup1203_n.png"
+                  alt="클러스터용인 경남아너스빌 추가 팝업"
+                  width={512}
+                  height={344}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 모바일: 첫 번째 이미지 팝업 */}
+      {isMobile && isFirstImagePopupOpen && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="relative w-full max-w-[440px]">
+            <button
+              onClick={() => {
+                setIsFirstImagePopupOpen(false)
+                // 첫 번째 팝업 닫으면 250ms 후 두 번째 팝업 열기
+                setTimeout(() => {
+                  setIsSecondImagePopupOpen(true)
+                }, 250)
+              }}
+              className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300"
+            >
+              ×
+            </button>
+            <div className="bg-white rounded-lg overflow-hidden">
+              <Image
+                src="/popup-image.png"
+                alt="클러스터용인 경남아너스빌 팝업"
+                width={440}
+                height={627}
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 모바일: 두 번째 이미지 팝업 */}
+      {isMobile && isSecondImagePopupOpen && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="relative w-full max-w-[512px]">
+            <button
+              onClick={() => setIsSecondImagePopupOpen(false)}
+              className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300"
+            >
+              ×
+            </button>
+            <div className="bg-white rounded-lg overflow-hidden">
+              <Image
+                src="/popup1203_n.png"
+                alt="클러스터용인 경남아너스빌 추가 팝업"
+                width={512}
+                height={344}
+                className="w-full h-auto"
+              />
             </div>
           </div>
         </div>

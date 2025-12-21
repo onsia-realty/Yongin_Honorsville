@@ -155,6 +155,28 @@ export default function RootLayout({
           gtag('js', new Date());
           gtag('config', 'AW-454722610');
         ` }} />
+
+        {/* 네이버 전환 추적 스크립트 (Naver Ads Pixel) */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            var na = document.createElement('script');
+            na.type = 'text/javascript';
+            na.async = true;
+            na.src = 'https://wcs.naver.net/wcslog.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(na, s);
+          })();
+        ` }} />
+        <script dangerouslySetInnerHTML={{ __html: `
+          if (!window.wcs_add) window.wcs_add = {};
+          wcs_add["wa"] = "${process.env.NEXT_PUBLIC_NAVER_ADS_ID || 's_5b5e8f4e9c9a'}";
+          if (typeof wcs != "undefined" && typeof wcs.inflow == "function") {
+            wcs.inflow("cluster-honorsville.co.kr");
+          }
+          if (typeof wcs_do != "undefined") {
+            wcs_do();
+          }
+        ` }} />
       </head>
       <body className="antialiased">
         {/* Google Tag Manager (noscript) */}

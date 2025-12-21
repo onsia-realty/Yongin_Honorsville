@@ -3,8 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { Phone, MapPin, Calendar } from 'lucide-react'
 import Link from 'next/link'
+import { trackCallClick } from '@/lib/naver-conversion'
 
 export default function QuickButtons() {
+  const handleCallClick = () => {
+    // 네이버 전환 추적 - 전화 연결 클릭
+    trackCallClick()
+  }
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
 
@@ -37,6 +42,7 @@ export default function QuickButtons() {
             {/* 전화상담 */}
             <a
               href="tel:1668-5257"
+              onClick={handleCallClick}
               className="group relative overflow-hidden bg-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
             >
               <div className="flex items-center justify-center py-6 px-4">
@@ -102,6 +108,7 @@ export default function QuickButtons() {
           {/* 전화상담 */}
           <a
             href="tel:1668-5257"
+            onClick={handleCallClick}
             className="flex flex-col items-center justify-center py-4 bg-white active:bg-blue-50"
           >
             <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mb-2 shadow-md">
@@ -138,6 +145,7 @@ export default function QuickButtons() {
       <div className="md:hidden fixed bottom-20 right-4 z-30">
         <a
           href="tel:1668-5257"
+          onClick={handleCallClick}
           className="flex items-center justify-center w-14 h-14 bg-gradient-to-r from-red-500 to-red-600 rounded-full shadow-[0_4px_20px_rgba(239,68,68,0.4)] animate-pulse"
         >
           <Phone className="w-6 h-6 text-white" />

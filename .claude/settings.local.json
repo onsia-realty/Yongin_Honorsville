@@ -11,7 +11,18 @@
       "WebFetch(domain:cluster-honorsville.co.kr)",
       "Bash(ls:*)",
       "Bash(cp:*)",
-      "mcp__playwright__browser_navigate"
+      "mcp__playwright__browser_navigate",
+      "Bash(cat:*)",
+      "Bash(timeout /t 5 /nobreak)",
+      "mcp__playwright__playwright_navigate",
+      "Bash(npx playwright install chromium)",
+      "Bash(npx playwright install)",
+      "Bash(dir:*)",
+      "Bash(npm exec:*)",
+      "Bash(npm install:*)",
+      "Bash(npx playwright@latest install:*)",
+      "Bash(pnpm run dev)",
+      "mcp__playwright__playwright_get_visible_text"
     ],
     "deny": []
   }

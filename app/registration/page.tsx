@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { trackRegistration } from "@/lib/naver-conversion"
 
 export default function RegistrationPage() {
   const [formData, setFormData] = useState({
@@ -158,7 +159,10 @@ export default function RegistrationPage() {
         console.error('SMS 발송 중 오류 (catch):', notificationError)
         // 알림 발송 실패해도 고객 등록은 성공으로 처리
       }
-      
+
+      // 네이버 전환 추적 - 관심고객 등록 완료
+      trackRegistration()
+
       alert("관심고객 등록이 완료되었습니다.\n\n담당자가 빠른 시일 내에 연락드리겠습니다.\n\n감사합니다.")
       
       // 폼 초기화

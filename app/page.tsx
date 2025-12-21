@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import Header from "@/components/Header"
+import { trackRegistration, trackCallClick } from "@/lib/naver-conversion"
 // import ClusterSection from "@/components/ClusterSection" // 임시 비활성화
 
 export default function HomePage() {
@@ -170,6 +171,9 @@ export default function HomePage() {
         console.error('SMS 발송 오류:', smsError)
         // SMS 실패해도 등록은 성공으로 처리
       }
+
+      // 네이버 전환 추적 - 관심고객 등록 완료
+      trackRegistration()
 
       // 성공 알림
       alert("관심고객 등록이 완료되었습니다.\n빠른 시일 내에 연락드리겠습니다.")
@@ -502,7 +506,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold mb-6">더 자세한 정보가 필요하신가요?</h2>
           <p className="text-xl mb-8 opacity-90">전문 상담원이 친절하게 안내해드립니다.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:1668-5257" className="inline-flex items-center justify-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold transition-all">
+            <a href="tel:1668-5257" onClick={trackCallClick} className="inline-flex items-center justify-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold transition-all">
               <Phone className="w-5 h-5 mr-2" />
               전화 상담하기
             </a>
@@ -722,6 +726,7 @@ export default function HomePage() {
       {/* 모바일 전화 버튼 */}
       <a
         href="tel:1668-5257"
+        onClick={trackCallClick}
         className="fixed left-4 top-1/2 -translate-y-1/2 z-50 md:hidden bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl animate-pulse"
         title="1668-5257로 전화걸기"
       >

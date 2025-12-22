@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ArticleSchema from "@/components/schema/ArticleSchema"
+import ShareButtons from "@/components/ShareButtons"
 import { neon } from '@neondatabase/serverless';
 import type { Metadata } from 'next'
 
@@ -105,9 +106,10 @@ function formatDate(dateString: string): string {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     return {
@@ -142,19 +144,20 @@ export const dynamic = 'force-dynamic';
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const post = await getBlogPost(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
 
   if (!post) {
     notFound();
   }
 
   // 조회수 증가 (비동기로 실행)
-  incrementViews(params.slug);
+  incrementViews(slug);
 
   // 관련 기사 조회
-  const relatedPosts = await getRelatedPosts(params.slug, post.keywords);
+  const relatedPosts = await getRelatedPosts(slug, post.keywords);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yongin-honorsville.vercel.app';
 
@@ -262,31 +265,7 @@ export default async function BlogPostPage({
           {/* Share Section */}
           <div className="mt-12 pt-8 border-t border-gray-200">
             <h3 className="text-lg font-semibold mb-4">이 기사 공유하기</h3>
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: post.title,
-                      text: post.excerpt,
-                      url: window.location.href,
-                    });
-                  }
-                }}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                공유하기
-              </button>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert('링크가 복사되었습니다!');
-                }}
-                className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
-              >
-                링크 복사
-              </button>
-            </div>
+            <ShareButtons title={post.title} excerpt={post.excerpt} />
           </div>
         </article>
 

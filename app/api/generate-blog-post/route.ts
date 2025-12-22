@@ -110,13 +110,21 @@ async function generateArticleWithClaude(params: GenerateArticleParams): Promise
 <h3 data-ke-size="size23">Q1. 질문?</h3>
 <p data-ke-size="size16">답변...</p>
 
-6. 마무리 문단
+6. 마무리 문단:
+<hr style="margin: 40px 0; border: none; border-top: 1px solid #e0e0e0;">
+<p data-ke-size="size16" style="color: #666; text-align: center;">
+분양 관련 자세한 내용은 견본주택 및 공식 홈페이지를 통해 확인하시기 바랍니다.
+</p>
+<p data-ke-size="size16" style="color: #666; text-align: center;">
+📞 분양 문의: <a href="tel:1668-5257" style="color: #0066cc; text-decoration: none;"><strong>1668-5257</strong></a> | 🌐 홈페이지: <a href="/business" style="color: #0066cc;">사업개요 보기</a>
+</p>
 
 **중요 지침:**
 - 경남아너스빌 관련 정보: 997세대, 84㎡/123㎡, SK하이닉스 10분대, 삼성전자 15분대
 - 부동산 광고 규제 준수 (과장 금지)
 - 키워드를 자연스럽게 본문에 3-5회 포함
 - 내부 링크 포함: [사업개요](/business), [분양일정](/sales-schedule), [관심고객등록](/registration)
+- 출처 표시 금지 (뉴스, 언론사 등 언급 금지)
 
 **응답 형식 (JSON):**
 {

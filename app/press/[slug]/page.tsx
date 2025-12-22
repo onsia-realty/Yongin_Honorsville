@@ -9,7 +9,13 @@ import ShareButtons from "@/components/ShareButtons"
 import { neon } from '@neondatabase/serverless';
 import type { Metadata } from 'next'
 
-const sql = neon(process.env.BLOG_DATABASE_URL!);
+// SQL 클라이언트를 함수 내부에서 초기화 (빌드 타임 에러 방지)
+function getSql() {
+  if (!process.env.BLOG_DATABASE_URL) {
+    throw new Error('BLOG_DATABASE_URL environment variable is not set');
+  }
+  return neon(process.env.BLOG_DATABASE_URL);
+}
 
 interface BlogPost {
   id: string;
@@ -30,6 +36,7 @@ interface BlogPost {
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
+    const sql = getSql();
     const posts = await sql`
       SELECT
         id,
@@ -62,6 +69,7 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 async function incrementViews(slug: string): Promise<void> {
   try {
+    const sql = getSql();
     await sql`
       UPDATE blog_posts
       SET views = views + 1
@@ -74,6 +82,7 @@ async function incrementViews(slug: string): Promise<void> {
 
 async function getRelatedPosts(currentSlug: string, keywords: string[]): Promise<BlogPost[]> {
   try {
+    const sql = getSql();
     const posts = await sql`
       SELECT
         id,

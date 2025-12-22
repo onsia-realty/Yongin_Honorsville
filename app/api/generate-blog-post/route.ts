@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.BLOG_DATABASE_URL!);
+// SQL 클라이언트를 함수 내부에서 초기화 (빌드 타임 에러 방지)
+function getSql() {
+  if (!process.env.BLOG_DATABASE_URL) {
+    throw new Error('BLOG_DATABASE_URL environment variable is not set');
+  }
+  return neon(process.env.BLOG_DATABASE_URL);
+}
 
 // 키워드 풀
 const KEYWORDS = [
@@ -203,6 +209,9 @@ export async function POST(request: Request) {
 
     // slug 생성
     const slug = generateSlug(article.title);
+
+    // DB 클라이언트 가져오기
+    const sql = getSql();
 
     // DB에 저장
     const result = await sql`

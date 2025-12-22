@@ -5,7 +5,13 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.BLOG_DATABASE_URL!);
+// SQL 클라이언트를 함수 내부에서 초기화 (빌드 타임 에러 방지)
+function getSql() {
+  if (!process.env.BLOG_DATABASE_URL) {
+    throw new Error('BLOG_DATABASE_URL environment variable is not set');
+  }
+  return neon(process.env.BLOG_DATABASE_URL);
+}
 
 interface BlogPost {
   id: string;
@@ -21,6 +27,7 @@ interface BlogPost {
 
 async function getBlogPosts(): Promise<BlogPost[]> {
   try {
+    const sql = getSql();
     const posts = await sql`
       SELECT
         id,

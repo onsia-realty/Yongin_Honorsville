@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://cluster-honorsville.com/sitemap.xml
+Sitemap: https://yongin-honorsville.vercel.app/sitemap.xml
 
 # Allow social media crawlers
 User-agent: Twitterbot

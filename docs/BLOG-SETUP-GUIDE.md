@@ -22,7 +22,7 @@
 **기술 스택**:
 - Next.js 16 + TypeScript
 - Neon PostgreSQL
-- Claude 3.5 Sonnet API
+- Claude Opus 4.5 API
 - Vercel Cron Jobs
 
 ---
@@ -90,8 +90,12 @@ ANTHROPIC_API_KEY=sk-ant-api03-여기에_실제_API_키_붙여넣기
 URL: https://console.anthropic.com/settings/usage
 
 **예상 비용** (Claude Opus 4.5 사용):
-- 기사 1개당: $0.50-0.80 (약 ₩650-1,050)
-- 월 30개 기사: $15-25 (약 ₩20,000-33,000)
+- 기사 1개당: $0.10-0.15 (약 ₩130-200)
+- 월 30개 기사: $3-5 (약 ₩4,000-7,000)
+
+**참고**:
+- 실제 비용은 생성되는 기사 길이에 따라 다를 수 있습니다
+- 2000-3000자 기사 기준 예상 비용입니다
 
 ---
 
@@ -327,7 +331,26 @@ curl -X POST http://localhost:3001/api/generate-blog-post -d '{}'
 
 ## 유지보수
 
-### 키워드 관리
+### 키워드 로테이션 시스템
+
+**현재 키워드 풀** (10개):
+- 경남아너스빌
+- 클러스터용인 경남아너스빌
+- 용인 아파트 분양
+- 용인 반도체 클러스터 아파트
+- SK하이닉스 인근 아파트
+- 삼성전자 용인 아파트
+- 용인 양지 분양
+- 용인 신축 아파트
+- 처인구 아파트
+- 동용인IC 아파트
+
+**로테이션 방식**:
+- Cron Job이 실행될 때마다 다음 키워드로 자동 순환
+- 10일에 한 번씩 모든 키워드가 사용됨
+- 각 기사에는 메인 키워드 + 관련 키워드 4개 포함
+
+**키워드 추가/수정**:
 `app/api/generate-blog-post/route.ts` 파일의 `KEYWORDS` 배열 수정:
 ```typescript
 const KEYWORDS = [

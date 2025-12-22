@@ -24,13 +24,17 @@ export default function HomePage() {
     inquiry: "",
   })
 
-  // 1초 후 비디오 팝업 자동 표시
+  // 1초 후 이미지 팝업 자동 표시 (순서 변경: 이미지2 → 이미지1 → 비디오)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVideoPopupOpen(true)
+      setIsSecondImagePopupOpen(true)
+      // PC는 두 이미지를 동시에 표시
+      if (!isMobile) {
+        setIsFirstImagePopupOpen(true)
+      }
     }, 1000)
     return () => clearTimeout(timer)
-  }, [])
+  }, [isMobile])
 
   // 모바일 감지
   useEffect(() => {
@@ -779,24 +783,14 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 비디오 팝업 */}
+      {/* 비디오 팝업 (순서 변경: 마지막 팝업) */}
       {isVideoPopupOpen && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-4xl">
             <button
               onClick={() => {
                 setIsVideoPopupOpen(false)
-                // 비디오 팝업 닫은 후 250ms 뒤에 이미지 팝업 열기
-                setTimeout(() => {
-                  if (isMobile) {
-                    // 모바일: 첫 번째 이미지만
-                    setIsFirstImagePopupOpen(true)
-                  } else {
-                    // PC: 두 이미지 모두
-                    setIsFirstImagePopupOpen(true)
-                    setIsSecondImagePopupOpen(true)
-                  }
-                }, 250)
+                // 비디오 팝업은 마지막이므로 다음 팝업 없음
               }}
               className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300"
             >
@@ -818,7 +812,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* PC: 두 이미지 가로 나란히 */}
+      {/* PC: 두 이미지 가로 나란히 (순서 변경: 이미지2 왼쪽, 이미지1 오른쪽) */}
       {!isMobile && (isFirstImagePopupOpen || isSecondImagePopupOpen) && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-[1000px]">
@@ -827,26 +821,19 @@ export default function HomePage() {
               onClick={() => {
                 setIsFirstImagePopupOpen(false)
                 setIsSecondImagePopupOpen(false)
+                // PC 이미지 팝업 닫으면 250ms 후 비디오 팝업 열기
+                setTimeout(() => {
+                  setIsVideoPopupOpen(true)
+                }, 250)
               }}
               className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300 z-10"
             >
               ×
             </button>
 
-            {/* 두 이미지 가로 배치 */}
+            {/* 두 이미지 가로 배치 - 순서 변경 */}
             <div className="flex gap-4">
-              {/* 첫 번째 이미지 */}
-              <div className="flex-1 bg-white rounded-lg overflow-hidden">
-                <Image
-                  src="/popup-image.png"
-                  alt="클러스터용인 경남아너스빌 팝업"
-                  width={440}
-                  height={627}
-                  className="w-full h-auto"
-                />
-              </div>
-
-              {/* 두 번째 이미지 */}
+              {/* 두 번째 이미지를 왼쪽에 */}
               <div className="flex-1 bg-white rounded-lg overflow-hidden">
                 <Image
                   src="/popup1203_n.png"
@@ -856,21 +843,32 @@ export default function HomePage() {
                   className="w-full h-auto"
                 />
               </div>
+
+              {/* 첫 번째 이미지를 오른쪽에 */}
+              <div className="flex-1 bg-white rounded-lg overflow-hidden">
+                <Image
+                  src="/popup-image.png"
+                  alt="클러스터용인 경남아너스빌 팝업"
+                  width={440}
+                  height={627}
+                  className="w-full h-auto"
+                />
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 모바일: 첫 번째 이미지 팝업 */}
+      {/* 모바일: 첫 번째 이미지 팝업 (순서 변경: 두 번째로 표시) */}
       {isMobile && isFirstImagePopupOpen && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-[440px]">
             <button
               onClick={() => {
                 setIsFirstImagePopupOpen(false)
-                // 첫 번째 팝업 닫으면 250ms 후 두 번째 팝업 열기
+                // 첫 번째 이미지 팝업 닫으면 250ms 후 비디오 팝업 열기
                 setTimeout(() => {
-                  setIsSecondImagePopupOpen(true)
+                  setIsVideoPopupOpen(true)
                 }, 250)
               }}
               className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300"
@@ -890,12 +888,18 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* 모바일: 두 번째 이미지 팝업 */}
+      {/* 모바일: 두 번째 이미지 팝업 (순서 변경: 첫 번째로 표시) */}
       {isMobile && isSecondImagePopupOpen && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-[512px]">
             <button
-              onClick={() => setIsSecondImagePopupOpen(false)}
+              onClick={() => {
+                setIsSecondImagePopupOpen(false)
+                // 두 번째 이미지 팝업 닫으면 250ms 후 첫 번째 이미지 팝업 열기
+                setTimeout(() => {
+                  setIsFirstImagePopupOpen(true)
+                }, 250)
+              }}
               className="absolute -top-8 md:-top-12 right-0 text-white text-2xl md:text-3xl hover:text-gray-300"
             >
               ×

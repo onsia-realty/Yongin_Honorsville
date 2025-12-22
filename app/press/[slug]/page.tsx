@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
@@ -24,6 +25,7 @@ interface BlogPost {
   views: number;
   seo_title: string;
   seo_description: string;
+  featured_image: string | null;
 }
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
@@ -42,7 +44,8 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
         updated_at,
         views,
         seo_title,
-        seo_description
+        seo_description,
+        featured_image
       FROM blog_posts
       WHERE slug = ${slug} AND status = 'published'
       LIMIT 1
@@ -249,6 +252,22 @@ export default async function BlogPostPage({
             </div>
           </div>
         </div>
+
+        {/* Featured Image */}
+        {post.featured_image && (
+          <div className="max-w-4xl mx-auto px-4 py-8">
+            <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+              <Image
+                src={post.featured_image}
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, 896px"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Article Content */}
         <article className="max-w-4xl mx-auto px-4 py-12">

@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { neon } from '@neondatabase/serverless';
@@ -15,6 +16,7 @@ interface BlogPost {
   published_at: string;
   views: number;
   keywords: string[];
+  featured_image: string | null;
 }
 
 async function getBlogPosts(): Promise<BlogPost[]> {
@@ -28,7 +30,8 @@ async function getBlogPosts(): Promise<BlogPost[]> {
         category,
         published_at,
         views,
-        keywords
+        keywords,
+        featured_image
       FROM blog_posts
       WHERE status = 'published'
       ORDER BY published_at DESC
@@ -94,21 +97,31 @@ export default async function PressPage() {
                   href={`/press/${post.slug}`}
                   className="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
                 >
-                  {/* Thumbnail Placeholder */}
-                  <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
-                    <svg
-                      className="w-16 h-16 text-blue-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  {/* Thumbnail */}
+                  <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center relative overflow-hidden">
+                    {post.featured_image ? (
+                      <Image
+                        src={post.featured_image}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
-                    </svg>
+                    ) : (
+                      <svg
+                        className="w-16 h-16 text-blue-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                        />
+                      </svg>
+                    )}
                   </div>
 
                   {/* Content */}

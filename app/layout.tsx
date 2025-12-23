@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: '클러스터용인 경남아너스빌',
     images: [
       {
-        url: 'https://yongin-honorsville.vercel.app/og-thumbnail.jpg',
+        url: 'https://yongin-honorsville.vercel.app/카톡 썸네일.jpg',
         width: 1024,
         height: 506,
         alt: '클러스터용인 경남아너스빌 - 반도체 프리미엄 직접 영향권',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
     description: '용인 반도체클러스터 중심, 삼성·SK 10분대 프리미엄아파트. 동용인IC 인접, 997세대 대단지',
-    images: ['https://yongin-honorsville.vercel.app/og-thumbnail.jpg'],
+    images: ['https://yongin-honorsville.vercel.app/카톡 썸네일.jpg'],
     creator: '@clusteryongin',
     site: '@clusteryongin',
   },
@@ -133,7 +133,7 @@ export default function RootLayout({
         `}</style>
         
         {/* 카카오톡 공유 이미지 (명시적 설정) */}
-        <meta property="og:image" content="https://yongin-honorsville.vercel.app/og-thumbnail.jpg" />
+        <meta property="og:image" content="https://yongin-honorsville.vercel.app/카톡 썸네일.jpg" />
         <meta property="og:image:width" content="1024" />
         <meta property="og:image:height" content="506" />
         <meta property="og:image:type" content="image/jpeg" />

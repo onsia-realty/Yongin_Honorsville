@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://yongin-honorsville.vercel.app/og-thumbnail.jpg',
-        width: 1200,
-        height: 630,
+        width: 1024,
+        height: 506,
         alt: '클러스터용인 경남아너스빌 - 반도체 프리미엄 직접 영향권',
         type: 'image/jpeg',
       },

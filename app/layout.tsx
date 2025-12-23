@@ -132,6 +132,12 @@ export default function RootLayout({
           }
         `}</style>
         
+        {/* 카카오톡 공유 이미지 (명시적 설정) */}
+        <meta property="og:image" content="https://yongin-honorsville.vercel.app/og-thumbnail.jpg" />
+        <meta property="og:image:width" content="1024" />
+        <meta property="og:image:height" content="506" />
+        <meta property="og:image:type" content="image/jpeg" />
+
         {/* 네이버 사이트 인증 */}
         <meta name="naver-site-verification" content="21e431fabface3d904e1968338dd3fd66dd05ba3" />
         

@@ -32,11 +32,11 @@ export const metadata: Metadata = {
     siteName: '클러스터용인 경남아너스빌',
     images: [
       {
-        url: 'https://yongin-honorsville.vercel.app/og-thumbnail.jpg',
+        url: 'https://yongin-honorsville.vercel.app/og-thumbnail.png',
         width: 1200,
         height: 630,
         alt: '클러스터용인 경남아너스빌 - 반도체 프리미엄 직접 영향권',
-        type: 'image/jpeg',
+        type: 'image/png',
       },
     ],
     locale: 'ko_KR',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '클러스터용인 경남아너스빌 | 반도체 프리미엄 직접 영향권',
     description: '용인 반도체클러스터 중심, 삼성·SK 10분대 프리미엄아파트. 동용인IC 인접, 997세대 대단지',
-    images: ['https://yongin-honorsville.vercel.app/og-thumbnail.jpg'],
+    images: ['https://yongin-honorsville.vercel.app/og-thumbnail.png'],
     creator: '@clusteryongin',
     site: '@clusteryongin',
   },

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Phone, MapPin, Calendar } from 'lucide-react'
 import Link from 'next/link'
 import { trackCallClick } from '@/lib/naver-conversion'
@@ -10,33 +10,11 @@ export default function QuickButtons() {
     // 네이버 전환 추적 - 전화 연결 클릭
     trackCallClick()
   }
-  const [isVisible, setIsVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      
-      // 스크롤 다운 시 숨기고, 스크롤 업 시 보이기
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false)
-      } else {
-        setIsVisible(true)
-      }
-      
-      setLastScrollY(currentScrollY)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
 
   return (
     <>
       {/* Desktop Version */}
-      <div className={`hidden md:flex fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] transition-transform duration-300 z-40 ${
-        isVisible ? 'translate-y-0' : 'translate-y-full'
-      }`}>
+      <div className="hidden md:flex fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-40">
         <div className="max-w-7xl mx-auto w-full">
           <div className="grid grid-cols-3 divide-x divide-gray-200">
             {/* 전화상담 */}
@@ -101,9 +79,7 @@ export default function QuickButtons() {
       </div>
 
       {/* Mobile Version */}
-      <div className={`md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] transition-transform duration-300 z-40 ${
-        isVisible ? 'translate-y-0' : 'translate-y-full'
-      }`}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)] z-40">
         <div className="grid grid-cols-3 divide-x divide-gray-200">
           {/* 전화상담 */}
           <a
@@ -141,44 +117,6 @@ export default function QuickButtons() {
         </div>
       </div>
 
-      {/* Floating Action Button for Mobile */}
-      <div className="md:hidden fixed bottom-20 right-4 z-30">
-        <a
-          href="tel:1668-5257"
-          onClick={handleCallClick}
-          className="flex items-center justify-center w-14 h-14 bg-gradient-to-r from-red-500 to-red-600 rounded-full shadow-[0_4px_20px_rgba(239,68,68,0.4)] animate-pulse"
-        >
-          <Phone className="w-6 h-6 text-white" />
-        </a>
-      </div>
-
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            transform: translateY(100%);
-          }
-          to {
-            transform: translateY(0);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-          }
-        }
-
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.8;
-            transform: scale(1.05);
-          }
-        }
-      `}</style>
     </>
   )
 }

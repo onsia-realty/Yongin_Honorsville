@@ -6,6 +6,7 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import ArticleSchema from "@/components/schema/ArticleSchema"
 import ShareButtons from "@/components/ShareButtons"
+import RemoveInlineCTA from "@/components/RemoveInlineCTA"
 import { neon } from '@neondatabase/serverless';
 import type { Metadata } from 'next'
 
@@ -186,17 +187,20 @@ export default async function BlogPostPage({
         url={`${siteUrl}/press/${post.slug}`}
       />
 
+      {/* Remove Inline CTA Sections */}
+      <RemoveInlineCTA />
+
       {/* Header */}
       <Header />
 
       {/* Main Content */}
       <main className="pt-20">
         {/* Article Header */}
-        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16">
+        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-8 md:py-12 lg:py-16">
           <div className="max-w-4xl mx-auto px-4">
             {/* Breadcrumb */}
-            <nav className="text-sm mb-6">
-              <ol className="flex items-center space-x-2 text-gray-400">
+            <nav className="text-xs md:text-sm mb-4 md:mb-6">
+              <ol className="flex items-center flex-wrap space-x-2 text-gray-400">
                 <li>
                   <Link href="/" className="hover:text-white transition-colors">
                     홈
@@ -214,19 +218,19 @@ export default async function BlogPostPage({
             </nav>
 
             {/* Category Badge */}
-            <div className="mb-4">
-              <span className="inline-block px-3 py-1 text-sm font-medium text-blue-400 bg-blue-900/30 rounded-full">
+            <div className="mb-3 md:mb-4">
+              <span className="inline-block px-2.5 py-1 text-xs md:text-sm font-medium text-blue-400 bg-blue-900/30 rounded-full">
                 {post.category}
               </span>
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 md:mb-6 leading-tight">
               {post.title}
             </h1>
 
             {/* Meta Info */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4 text-xs md:text-sm text-gray-400">
               <span className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -264,8 +268,8 @@ export default async function BlogPostPage({
 
         {/* Featured Image */}
         {post.featured_image && (
-          <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+          <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
+            <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
               <Image
                 src={post.featured_image}
                 alt={post.title}
@@ -279,48 +283,48 @@ export default async function BlogPostPage({
         )}
 
         {/* Article Content */}
-        <article className="max-w-4xl mx-auto px-4 py-12">
+        <article className="max-w-4xl mx-auto px-4 py-8 md:py-12">
           {/* HTML Content */}
           <div
-            className="prose prose-lg max-w-none"
+            className="prose prose-sm md:prose-base lg:prose-lg max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
             style={{
               lineHeight: '1.8',
-              fontSize: '16px',
+              fontSize: 'inherit',
             }}
           />
 
           {/* Share Section */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <h3 className="text-lg font-semibold mb-4">이 기사 공유하기</h3>
+          <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-200">
+            <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4">이 기사 공유하기</h3>
             <ShareButtons title={post.title} excerpt={post.excerpt} />
           </div>
         </article>
 
         {/* Related Posts */}
         {relatedPosts.length > 0 && (
-          <div className="bg-gray-50 py-16">
+          <div className="bg-gray-50 py-12 md:py-16">
             <div className="max-w-6xl mx-auto px-4">
-              <h2 className="text-2xl font-bold text-gray-900 mb-8">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 md:mb-8">
                 관련 기사
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 {relatedPosts.map((relatedPost) => (
                   <Link
                     key={relatedPost.id}
                     href={`/press/${relatedPost.slug}`}
-                    className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow"
+                    className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-lg active:scale-98 transition-all"
                   >
-                    <span className="inline-block px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full mb-3">
+                    <span className="inline-block px-2.5 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full mb-2 md:mb-3">
                       {relatedPost.category}
                     </span>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                    <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">
                       {relatedPost.title}
                     </h3>
-                    <p className="text-gray-600 text-sm line-clamp-3 mb-3">
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-2 md:mb-3 leading-relaxed">
                       {relatedPost.excerpt}
                     </p>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-xs md:text-sm text-gray-500">
                       {formatDate(relatedPost.published_at)}
                     </span>
                   </Link>
@@ -331,18 +335,18 @@ export default async function BlogPostPage({
         )}
 
         {/* CTA Section */}
-        <div className="bg-gray-900 text-white py-16">
+        <div className="bg-gray-900 text-white py-12 md:py-16">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
               경남아너스빌 분양 상담
             </h2>
-            <p className="text-lg text-gray-300 mb-8">
+            <p className="text-base md:text-lg text-gray-300 mb-6 md:mb-8">
               전문 상담원이 자세한 분양 정보를 안내해드립니다
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <a
                 href="tel:1668-5257"
-                className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3.5 md:px-8 md:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors min-h-[48px]"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -351,7 +355,7 @@ export default async function BlogPostPage({
               </a>
               <Link
                 href="/registration"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3.5 md:px-8 md:py-4 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors min-h-[48px]"
               >
                 관심고객 등록
               </Link>

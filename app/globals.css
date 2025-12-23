@@ -364,3 +364,73 @@
     padding-bottom: 120px !important;
   }
 }
+
+/* 블로그 본문 모바일 최적화 */
+@layer components {
+  .prose {
+    /* 모바일 텍스트 크기 최적화 */
+    @apply text-base leading-relaxed;
+  }
+
+  @media (max-width: 768px) {
+    .prose {
+      /* 모바일에서 더 나은 가독성 */
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .prose h1 {
+      @apply text-2xl mb-4;
+    }
+
+    .prose h2 {
+      @apply text-xl mb-3;
+    }
+
+    .prose h3 {
+      @apply text-lg mb-2;
+    }
+
+    .prose h4 {
+      @apply text-base mb-2;
+    }
+
+    .prose p {
+      @apply mb-4;
+    }
+
+    .prose ul, .prose ol {
+      @apply mb-4 pl-5;
+    }
+
+    .prose li {
+      @apply mb-2;
+    }
+
+    .prose img, .prose figure {
+      @apply my-4 rounded-lg;
+    }
+
+    .prose table {
+      @apply text-sm;
+    }
+
+    .prose blockquote {
+      @apply text-sm my-4 px-4 py-3;
+    }
+
+    /* 네이버 블로그 스타일 콘텐츠 최적화 */
+    .prose .toc-container {
+      @apply text-sm p-4;
+    }
+
+    .prose .potato-table {
+      @apply text-xs overflow-x-auto block;
+    }
+  }
+}
+
+/* 터치 영역 최적화 */
+.active\:scale-98:active {
+  transform: scale(0.98);
+}

@@ -17,6 +17,53 @@ pnpm run start  # Start production server
 pnpm run lint   # Run linting
 ```
 
+## URL Content Extraction
+
+**MANDATORY: Always use Playwright MCP for URL content extraction**
+
+When the user provides a URL to extract content (news articles, blog posts, etc.):
+
+1. **NEVER use WebFetch tool** - many websites block automated requests (403 errors)
+2. **ALWAYS use Playwright MCP** - browser automation bypasses anti-bot protections
+3. **Standard workflow:**
+   ```
+   - mcp__playwright__browser_navigate to URL
+   - mcp__playwright__browser_snapshot to capture content
+   - Extract title, date, content, images from snapshot
+   - Close browser with mcp__playwright__browser_close
+   ```
+
+**Example use case:** Adding news articles to `/press` page from external URLs
+
+## Blog Content Guidelines
+
+**CRITICAL: News Source Attribution**
+
+When creating blog posts based on news articles:
+
+1. **NEVER include direct source attribution in content body**
+   - ❌ BAD: "본 게시글은 핀포인트뉴스(2025.12.22) 보도 내용을 참고하여 작성되었습니다"
+   - ❌ BAD: "핀포인트뉴스 보도에 따르면..."
+   - ❌ BAD: Any footer text citing news sources
+
+2. **DO include original article link ONLY in database metadata**
+   - Store in `source` field (e.g., 'news-pinpoint')
+   - Add URL to keywords/metadata if needed
+   - Keep attribution minimal and technical
+
+3. **Image Captions for AI-Generated Images**
+   - ✅ GOOD: "(이미지는 뉴스 내용을 기반으로 재구성)"
+   - ✅ GOOD: "(보도 내용을 바탕으로 제작된 이미지)"
+   - ❌ BAD: "(사진=용인특례시)" or "(사진=핀포인트뉴스)"
+
+4. **NEVER include inline CTA sections in blog content**
+   - ❌ BAD: Adding HTML blocks with "더 자세한 정보가 필요하신가요?" inside content
+   - ❌ BAD: Any CTA buttons (전화 상담하기, 오시는길, 카카오톡 문의) in content body
+   - ✅ GOOD: Page layout already has CTA sections at the bottom
+   - The blog detail page (`/press/[slug]/page.tsx`) already includes proper CTA sections
+
+**Reasoning**: Direct news source citations can create copyright/plagiarism concerns. Keep content original and attribution technical. Inline CTAs create visual clutter and are redundant with page-level CTAs.
+
 ## Architecture Overview
 
 This is a **Next.js 15.2.4** real estate website for "클러스터용인 경남아너스빌" (Cluster Yongin Kyungnam Honorsville) apartment complex, built with the App Router pattern and TypeScript.

@@ -74,19 +74,19 @@ export default async function PressPage() {
       {/* Main Content */}
       <main className="pt-20">
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-20">
+        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-12 md:py-20">
           <div className="max-w-6xl mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
               부동산 뉴스 & 정보
             </h1>
-            <p className="text-lg md:text-xl text-gray-300">
+            <p className="text-base md:text-lg lg:text-xl text-gray-300">
               용인 부동산 시장과 경남아너스빌 관련 최신 소식을 확인하세요
             </p>
           </div>
         </div>
 
         {/* Blog List */}
-        <div className="max-w-6xl mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto px-4 py-8 md:py-16">
           {posts.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-xl text-gray-600 mb-4">
@@ -97,15 +97,15 @@ export default async function PressPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {posts.map((post) => (
                 <Link
                   key={post.id}
                   href={`/press/${post.slug}`}
-                  className="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                  className="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 active:scale-98"
                 >
                   {/* Thumbnail */}
-                  <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center relative overflow-hidden">
+                  <div className="w-full h-48 md:h-52 lg:h-48 bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center relative overflow-hidden">
                     {post.featured_image ? (
                       <Image
                         src={post.featured_image}
@@ -132,21 +132,21 @@ export default async function PressPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6">
+                  <div className="p-4 md:p-6">
                     {/* Category Badge */}
-                    <div className="mb-3">
-                      <span className="inline-block px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full">
+                    <div className="mb-2 md:mb-3">
+                      <span className="inline-block px-2.5 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full">
                         {post.category}
                       </span>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
                       {post.title}
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 line-clamp-3 leading-relaxed">
                       {post.excerpt}
                     </p>
 
@@ -196,18 +196,18 @@ export default async function PressPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gray-50 py-16">
+        <div className="bg-gray-50 py-12 md:py-16">
           <div className="max-w-6xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
               경남아너스빌에 관심이 있으신가요?
             </h2>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
               분양 정보와 상담을 원하시면 지금 바로 문의하세요
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <a
                 href="tel:1668-5257"
-                className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3.5 md:px-8 md:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors min-h-[48px]"
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -226,7 +226,7 @@ export default async function PressPage() {
               </a>
               <Link
                 href="/registration"
-                className="inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3.5 md:px-8 md:py-4 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 active:bg-gray-950 transition-colors min-h-[48px]"
               >
                 관심고객 등록
               </Link>
